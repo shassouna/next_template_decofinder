@@ -10,7 +10,9 @@ const Header = ({
     totalCompareItems,
     toggleClick,
     totalWishlistItems,
+    props
 }) => {
+    console.log(props)
     const [isToggled, setToggled] = useState(false);
     const [scroll, setScroll] = useState(0);
 

@@ -12,12 +12,15 @@ import CategorySlider from "./../components/sliders/Category";
 import Intro1 from "./../components/sliders/Intro4";
 import Link from "next/link";
 
-export default function Home() {
+// Our imports
+import axios from 'axios';
+
+export default function Home(props) {
     return (
         <>
             <IntroPopup />
 
-            <Layout noBreadcrumb="d-none">
+            <Layout props={props} noBreadcrumb="d-none">
                 <section className="home-slider position-relative mb-30">
                     <div className="container">
                         <div className="home-slide-cover mt-30">
@@ -106,4 +109,157 @@ export default function Home() {
             </Layout>
         </>
     );
+}
+
+export async function getStaticProps(context) {
+    const qs =require('qs')
+
+    const res = await axios.get(`http://localhost:1337/api/superuniversdetailss`)
+
+    const rayons_superunivers = []
+    const typeprods_univers = []
+
+    for (let cle_superunivers of res.data.data) {
+
+        const query = qs.stringify(
+            {
+                filters: {
+                            CLE_SUPERUNIVERS: { $eq: cle_superunivers["attributes"]["CLE_SUPERUNIVERS"] } 
+                        }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        ) 
+        const res2 = await axios.get(`http://localhost:1337/api/rayonbases?${query}`)
+
+        const rayons_keys = []
+
+        for (let superunivers of res2.data.data) {
+            rayons_keys.push(superunivers['attributes']['CLE_RAYON'])
+        }
+
+        const query2 = qs.stringify(
+            {
+                filters: {
+                            CLE_RAYON : { $in : rayons_keys },
+                            CLE_LANG : { $eq : "0"}
+                        }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        ) 
+        const res3 = await axios.get(`http://localhost:1337/api/rayondetails?${query2}`)   
+        rayons_superunivers.push({superunivers_lib : cle_superunivers, univers : res3.data.data})
+
+        for (let univers of res3.data.data) {
+            const query3 = qs.stringify(
+                {
+                    filters : {
+                                    
+                                CLE_RAYON: { $eq: univers['attributes']['CLE_RAYON'] }    
+                            }
+                },
+                {
+                    encodeValuesOnly: true,
+                }
+            ) 
+            const res4 = await axios.get(`http://localhost:1337/api/typeprods?${query3}`) 
+            typeprods_univers.push({univers : univers, typeprods : res4.data.data})    
+        }
+    }
+
+    const query3 = qs.stringify(
+        {
+            filters: {
+                $or: [
+                    {selection: { $eq: true }},
+                    {coupdecoeur: { $eq: true }},
+                    {achatenligne: { $eq: true }},     
+                    {asaisir: { $eq: true }}               
+                ]
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+        )
+    const res2 = await axios.get(`http://localhost:1337/api/produits?${query3}`)  
+    const selections = []
+    for (let produit of res2.data.data) {
+        const query = qs.stringify (
+            {
+                filters: {
+                    CLE_EXPOSANT: { $eq: produit['attributes']['CLE_EXPOSANT'] } 
+                }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        )   
+        const res = await axios.get(`http://localhost:1337/api/exposants?${query}`) 
+
+        const query2 = qs.stringify (
+            {
+                filters: {
+                    CLE_TYPE_PROD: { $eq: produit['attributes']['CLE_TYPE_PROD'] } 
+                }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        )  
+        const res2 = await axios.get(`http://localhost:1337/api/typeprods?${query2}`) 
+        selections.push({produit : produit, typeprod : res2.data.data[0], exposant : res.data.data[0]})
+    }
+
+    const query4 = qs.stringify(
+        {
+            filters: {
+                NOUVEAUTE : { $eq: "1" } 
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+        )
+        const res3 = await axios.get(`http://localhost:1337/api/produits?${query4}`) 
+        const nouveautes = []
+        for (let produit of res3.data.data) {
+            const query = qs.stringify (
+                {
+                    filters: {
+                        CLE_EXPOSANT: { $eq: produit['attributes']['CLE_EXPOSANT'] } 
+                    }
+                },
+                {
+                    encodeValuesOnly: true,
+                }
+            )   
+            const res = await axios.get(`http://localhost:1337/api/exposants?${query}`) 
+    
+            const query2 = qs.stringify (
+                {
+                    filters: {
+                        CLE_TYPE_PROD: { $eq: produit['attributes']['CLE_TYPE_PROD'] } 
+                    }
+                },
+                {
+                    encodeValuesOnly: true,
+                }
+            )  
+            const res2 = await axios.get(`http://localhost:1337/api/typeprods?${query2}`) 
+
+            nouveautes.push({produit : produit, typeprod : res2.data.data[0], exposant : res.data.data[0]})
+        }
+    return {
+      props: {
+          superunivers : res.data.data,
+          rayons_univers : rayons_superunivers,
+          typeprods_univers : typeprods_univers,
+          selections : selections,
+          nouveautes : nouveautes
+      }, 
+    }
 }
