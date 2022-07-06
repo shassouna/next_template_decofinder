@@ -111,7 +111,7 @@ export default function Home(props) {
     );
 }
 
-export async function getStaticProps(context) {
+/*export async function getStaticProps(context) {
     const qs =require('qs')
 
     const res = await axios.get(`http://localhost:1337/api/superuniversdetailss`)
@@ -262,4 +262,4 @@ export async function getStaticProps(context) {
           nouveautes : nouveautes
       }, 
     }
-}
+}*/

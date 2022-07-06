@@ -12,7 +12,13 @@ import ProductTab from "../elements/ProductTab";
 import RelatedSlider from "../sliders/Related";
 import ThumbSlider from "../sliders/Thumb";
 
+// My Imports
+import Image from 'next/image'
+
 const ProductDetails = ({
+    produit,
+    exposant,
+    pays,
     product,
     cartItems,
     addToCompare,
@@ -43,6 +49,8 @@ const ProductDetails = ({
     const inCart = cartItems.find((cartItem) => cartItem.id === product.id);
 
     console.log(inCart);
+    console.log(product)
+    console.log(produit.attributes)    
 
     return (
         <>
@@ -57,16 +65,23 @@ const ProductDetails = ({
                                             <span className="zoom-icon">
                                                 <i className="fi-rs-search"></i>
                                             </span>
-
                                             <div className="product-image-slider">
                                                 <ThumbSlider product={product} />
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6 col-sm-12 col-xs-12">
+                                    <div className="col-md-6 col-sm-12 col-xs-12" style={{backgroundColor:"#FAFAFB"}}>
                                         <div className="detail-info  pr-30 pl-30">
-                                            <span className="stock-status out-stock"> Sale Off </span>
-                                            <h2 className="title-detail">{product.title}</h2>
+                                            <div className="detail-info-header">
+                                                <Image
+                                                style={{backgroundColor:"red", borderRadius:"2.5px"}}
+                                                src="/assets/imgs/theme/icons/icon-youtube-white.svg"
+                                                width={160}
+                                                height={130}>
+                                                </Image>
+                                                <button className="detail-info-header-button">Suivre</button>
+                                            </div>
+                                            <h2 className="title-detail">{produit['attributes']['TITRE_FR']}</h2>
                                             <div className="product-detail-rating">
                                                 <div className="product-rate-cover text-end">
                                                     <div className="product-rate d-inline-block">
@@ -77,91 +92,79 @@ const ProductDetails = ({
                                             </div>
                                             <div className="clearfix product-price-cover">
                                                 <div className="product-price primary-color float-left">
-                                                    <span className="current-price  text-brand">${product.price}</span>
+                                                    <span className="current-price  text-brand">{produit['attributes']['TARIF_PUB']+" €"}</span>
                                                     <span>
                                                         <span className="save-price font-md color3 ml-15">{product.discount.percentage}% Off</span>
                                                         <span className="old-price font-md ml-15">{product.oldPrice ? `$ ${product.oldPrice}` : null}</span>
                                                     </span>
                                                 </div>
                                             </div>
-
-                                            <div className="short-desc mb-30">
-                                                <p className="font-lg">{product.desc}</p>
-                                            </div>
-                                            <div className="attr-detail attr-color mb-15">
-                                                <strong className="mr-10">Color</strong>
-                                                <ul className="list-filter color-filter">
-                                                    {product.variations.map((clr, i) => (
-                                                        <li key={i}>
-                                                            <a href="#">
-                                                                <span className={`product-color-${clr}`}></span>
-                                                            </a>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                            <div className="attr-detail attr-size">
-                                                <strong className="mr-10">Size</strong>
-                                                <ul className="list-filter size-filter font-small">
-                                                    <li className="active">
-                                                        <a>M</a>
-                                                    </li>
-                                                    <li>
-                                                        <a>L</a>
-                                                    </li>
-                                                    <li>
-                                                        <a>XL</a>
-                                                    </li>
-                                                    <li>
-                                                        <a>XXL</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                             <div className="bt-1 border-color-1 mt-30 mb-30"></div>
+                                            <div style={{display:'flex', flexDirection:'column', justifyContent:'center', marginRight:"10px", marginLeft:"10px"}}>
+                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>SITE WEB</button>
+                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>QUESTION / DEVIS</button>
+                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>POINTS DE VENTE</button>
+                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>METTRE EN FAVORIS</button>
+                                            </div>
+                                            <div className="mobile-social-icon">
+                                                <a href="#">
+                                                    <Image
+                                                        src="/assets/imgs/theme/icons/icon-facebook-white.svg"
+                                                        alt=""
+                                                        width={75}
+                                                        height={75}
+                                                        className="mobile-social-icon-item"
+                                                    />
+                                                </a>
+                                                <a href="#">
+                                                    <Image
+                                                        src="/assets/imgs/theme/icons/icon-twitter-white.svg"
+                                                        alt=""
+                                                        width={75}
+                                                        height={75}
+                                                        className="mobile-social-icon-item"
+                                                    />
+                                                </a>
+                                                <a href="#">
+                                                    <Image
+                                                        src="/assets/imgs/theme/icons/icon-instagram-white.svg"
+                                                        alt=""
+                                                        width={75}
+                                                        height={75}
+                                                        className="mobile-social-icon-item"
+                                                    />
+                                                </a>
+                                                <a href="#">
+                                                    <Image
+                                                        src="/assets/imgs/theme/icons/icon-pinterest-white.svg"
+                                                        alt=""
+                                                        width={75}
+                                                        height={75}
+                                                        className="mobile-social-icon-item"
+                                                    />
+                                                </a>
+                                            </div>
                                             <div className="detail-extralink">
-                                                <div className="detail-qty border radius">
-                                                    <a onClick={(e) => (!inCart ? setQuantity(quantity > 1 ? quantity - 1 : 1) : decreaseQuantity(product?.id))} className="qty-down">
-                                                        <i className="fi-rs-angle-small-down"></i>
-                                                    </a>
-                                                    <span className="qty-val">{inCart?.quantity || quantity}</span>
-                                                    <a onClick={() => (!inCart ? setQuantity(quantity + 1) : increaseQuantity(product.id))} className="qty-up">
-                                                        <i className="fi-rs-angle-small-up"></i>
-                                                    </a>
-                                                </div>
-                                                <div className="product-extra-link2">
-                                                    <button
-                                                        onClick={(e) =>
-                                                            handleCart({
-                                                                ...product,
-                                                                quantity: quantity || 1
-                                                            })
-                                                        }
-                                                        className="button button-add-to-cart"
-                                                    >
+                                                <div className="product-extra-link2-button">
+                                                    <button className="button button-add-to-cart">
                                                         Add to cart
                                                     </button>
-                                                    <a aria-label="Add To Wishlist" className="action-btn hover-up" onClick={(e) => handleWishlist(product)}>
-                                                        <i className="fi-rs-heart"></i>
-                                                    </a>
-                                                    <a aria-label="Compare" className="action-btn hover-up" onClick={(e) => handleCompare(product)}>
-                                                        <i className="fi-rs-shuffle"></i>
-                                                    </a>
                                                 </div>
                                             </div>
                                             <ul className="product-meta font-xs color-grey mt-50">
                                                 <li className="mb-5">
-                                                    SKU:
-                                                    <a href="#">FWM15VKT</a>
+                                                  Origine : 
+                                                    <a href="#">{pays['attributes']['LIB_FR']}</a>
                                                 </li>
                                                 <li className="mb-5">
-                                                    Tags:
+                                                  Ref. Fab :
                                                     <a href="#" rel="tag" className="me-1">
-                                                        Cloth,
+                                                      {produit['attributes']['REFERENCE_FABRICANT']}
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    Availability:
-                                                    <span className="in-stock text-success ml-5">{product.stock} Items In Stock</span>
+                                                  EAN :
+                                                    <span className="in-stock text-success ml-5">{produit['attributes']['EAN']}</span>
                                                 </li>
                                             </ul>
                                         </div>
