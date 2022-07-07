@@ -168,9 +168,9 @@ const ProductDetails = ({
                                             <div className="bt-1 border-color-1 mt-30 mb-30"></div>
                                             <div style={{display:'flex', flexDirection:'column', justifyContent:'center', marginRight:"10px", marginLeft:"10px"}}>
                                                 <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
-                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i><p>QUESTION / DEVIS</p><div>42£</div></button>
-                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i><p>POINTS DE VENTE</p><div>42£</div></button>
-                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i><p>METTRE EN FAVORIS</p><div>42£</div></button>
+                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
+                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
+                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
                                             </div>
                                         </div>
                                     </div>
