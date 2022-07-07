@@ -4,7 +4,7 @@ import Layout from '../../components/layout/Layout';
 import { server } from "../../config/index";
 import { findProductIndex } from "../../util/util";
 
-
+// My imports
 import axios from 'axios'
 
 const ProductId = (props) => {
@@ -12,7 +12,17 @@ const ProductId = (props) => {
         <>
          {<Layout parent="Home" sub="Shop" subChild={props.produit['attributes']['TITRE_FR']}>
             <div className="container">
-                <ProductDetails product={props.product} produit={props.produit} exposant={props.exposant} pays={props.pays}/>
+                <ProductDetails 
+                product={props.product} 
+                produit={props.produit} 
+                exposant={props.exposant} 
+                pays={props.pays}
+                autres_produits_exposant_typeprod={props.autres_produits_exposant_typeprod}
+                typeprod={props.typeprod}
+                autres_produits_exposant={props.autres_produits_exposant}
+                autres_produits_typeprod={props.autres_produits_typeprod}
+                autres_typeprods={props.autres_typeprods}
+                />
             </div>
          </Layout>}
         </>

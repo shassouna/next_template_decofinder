@@ -11744,6 +11744,8 @@ footer .hotline img {
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 18px;
+  margin-top: 18px
+  ;
 }
 .detail-info-header-button {
   box-sizing: border-box;
@@ -11801,4 +11803,18 @@ footer .hotline img {
   min-width: 100px;
 
   margin-top: 38px;
+}
+
+.button.button-add-to-cart2 {
+  padding: 8px 40px;
+  margin-bottom: 18px;
+  border: 1px solid #343A40;
+  border-radius:2px;
+  background-color:#343A40;
+  color:#FBFBFB;
+}
+.button.button-add-to-cart2:hover {
+  color:#ADC07A;
+  background-color: #FBFBFB;
+  border-radius:12px;
 }

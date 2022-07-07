@@ -11,6 +11,7 @@ import { addToWishlist } from "../../redux/action/wishlistAction";
 import ProductTab from "../elements/ProductTab";
 import RelatedSlider from "../sliders/Related";
 import ThumbSlider from "../sliders/Thumb";
+import CategorySlider from "../sliders/Category";
 
 // My Imports
 import Image from 'next/image'
@@ -19,6 +20,11 @@ const ProductDetails = ({
     produit,
     exposant,
     pays,
+    autres_produits_exposant_typeprod,
+    typeprod,
+    autres_produits_exposant,
+    autres_produits_typeprod,
+    autres_typeprods,
     product,
     cartItems,
     addToCompare,
@@ -74,14 +80,14 @@ const ProductDetails = ({
                                         <div className="detail-info  pr-30 pl-30">
                                             <div className="detail-info-header">
                                                 <Image
-                                                style={{backgroundColor:"red", borderRadius:"2.5px"}}
+                                                style={{backgroundColor:"gray", borderRadius:"4.5px"}}
                                                 src="/assets/imgs/theme/icons/icon-youtube-white.svg"
                                                 width={160}
                                                 height={130}>
                                                 </Image>
                                                 <button className="detail-info-header-button">Suivre</button>
                                             </div>
-                                            <h2 className="title-detail">{produit['attributes']['TITRE_FR']}</h2>
+                                            <h2 className="title-detail">{typeprod['attributes']['LIB_FR'].split("-").join(" ")+ " - "+ produit['attributes']['TITRE_FR']}</h2>
                                             <div className="product-detail-rating">
                                                 <div className="product-rate-cover text-end">
                                                     <div className="product-rate d-inline-block">
@@ -146,41 +152,85 @@ const ProductDetails = ({
                                             </div>
                                             <div className="detail-extralink">
                                                 <div className="product-extra-link2-button">
-                                                    <button className="button button-add-to-cart">
+                                                    <button className="button button-add-to-cart2">
                                                         Add to cart
                                                     </button>
                                                 </div>
                                             </div>
-                                            <ul className="product-meta font-xs color-grey mt-50">
-                                                <li className="mb-5">
-                                                  Origine : 
-                                                    <a href="#">{pays['attributes']['LIB_FR']}</a>
-                                                </li>
-                                                <li className="mb-5">
-                                                  Ref. Fab :
-                                                    <a href="#" rel="tag" className="me-1">
-                                                      {produit['attributes']['REFERENCE_FABRICANT']}
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                  EAN :
-                                                    <span className="in-stock text-success ml-5">{produit['attributes']['EAN']}</span>
-                                                </li>
-                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6 col-sm-12 col-xs-12" style={{backgroundColor:"#FFFFFF"}}>
+                                    </div>
+                                    <div className="col-md-6 col-sm-12 col-xs-12" style={{backgroundColor:"#FAFAFB", marginTop:"50px"}}>
+                                        <div className="detail-info  pr-30 pl-30">
+                                            <h2 className="title-detail" style={{ marginTop:"20px",fontWeight: 700, fontSize: '24px', lineHeight: '32px'}}>Acheter en ligne</h2>
+                                            <div className="bt-1 border-color-1 mt-30 mb-30"></div>
+                                            <div style={{display:'flex', flexDirection:'column', justifyContent:'center', marginRight:"10px", marginLeft:"10px"}}>
+                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
+                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i><p>QUESTION / DEVIS</p><div>42£</div></button>
+                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i><p>POINTS DE VENTE</p><div>42£</div></button>
+                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i><p>METTRE EN FAVORIS</p><div>42£</div></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 {quickView ? null : (
                                     <>
-                                        <ProductTab />
+                                        <ProductTab  
+                                        produit={produit}
+                                        pays={pays}
+                                        />
                                         <div className="row mt-60">
-                                            <div className="col-12">
-                                                <h3 className="section-title style-1 mb-30">Related products</h3>
+                                            <div className="col-12" style={{display:"flex", justifyContent:"center"}}>
+                                                <h3 className="section-title style-1 mb-30">Autres produits {typeprod['attributes']['LIB_FR']+" "+exposant['attributes']['NOM']}</h3>
                                             </div>
                                             <div className="col-12">
                                                 <div className="row related-products position-relative">
-                                                    <RelatedSlider />
+                                                    <RelatedSlider 
+                                                    produits={autres_produits_exposant_typeprod}
+                                                    exposant={exposant}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-60">
+                                            <div className="col-12" style={{display:"flex", justifyContent:"center"}}>
+                                                <h3 className="section-title style-1 mb-30">Toute la collection de {exposant['attributes']['NOM']}</h3>
+                                            </div>
+                                            <div className="col-12">
+                                            <div className="carausel-10-columns-cover position-relative">
+                                                <div className="carausel-10-columns" id="carausel-10-columns">
+                                                    <CategorySlider 
+                                                    autres_produits_exposant={autres_produits_exposant}
+                                                    />
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-60">
+                                            <div className="col-12" style={{display:"flex", justifyContent:"center"}}>
+                                                <h3 className="section-title style-1 mb-30">Vous aimerez aussi</h3>
+                                            </div>
+                                            <div className="col-12">
+                                                <div className="row related-products position-relative">
+                                                    <RelatedSlider 
+                                                    produits={autres_produits_typeprod}
+                                                    exposant={exposant}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-60">
+                                            <div className="col-12" style={{display:"flex", justifyContent:"center"}}>
+                                                <h3 className="section-title style-1 mb-30">Produits associés</h3>
+                                            </div>
+                                            <div className="col-12">
+                                                <div className="row related-products position-relative">
+                                                    <RelatedSlider 
+                                                    autres_typeprods={autres_typeprods}
+                                                    exposant={exposant}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>

@@ -6,7 +6,8 @@ import SingleProduct from "./../ecommerce/SingleProduct";
 
 SwiperCore.use([Navigation]);
 
-const RelatedSlider = () => {
+const RelatedSlider = (props) => {
+
     const [related, setRelated] = useState([]);
 
     useEffect(() => {
@@ -18,6 +19,7 @@ const RelatedSlider = () => {
         const allProducts = await fetchByCatagory("/static/product.json");
         setRelated(allProducts);
     };
+    console.log(props.autres_typeprods)
 
     return (
         <>
@@ -31,9 +33,22 @@ const RelatedSlider = () => {
                 }}
                 className="custom-class"
             >
-                {related.map((product, i) => (
+                {props.produits&&related.map((product, i) => (
                     <SwiperSlide key={i}>
-                        <SingleProduct product={product} />
+                        <SingleProduct 
+                        product={product} 
+                        produit={props.produits[2]}
+                        exposant={props.exposant}
+                        />
+                    </SwiperSlide>
+                ))}
+                {props.autres_typeprods&&related.map((product, i) => (
+                    <SwiperSlide key={i}>
+                        <SingleProduct 
+                        product={product} 
+                        typeproduit={props.autres_typeprods[0]}
+                        exposant={props.exposant}
+                        />
                     </SwiperSlide>
                 ))}
             </Swiper>

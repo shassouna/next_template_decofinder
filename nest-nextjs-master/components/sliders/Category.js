@@ -76,7 +76,7 @@ const data = [
         bg: "bg-11"
     }
 ];
-const CategorySlider = () => {
+const CategorySlider = (props) => {
 
 
     const router = useRouter();
@@ -122,20 +122,20 @@ const CategorySlider = () => {
                     }
                 }}
             >
-                {data.map((item, i) => (
-                    <SwiperSlide key={i}>
-                        <div className={`card-2 ${item.bg} wow animate__animated animate__fadeInUp`} onClick={(e) => selectCategory(e, item.slug)}>
+                {props.autres_produits_exposant&&props.autres_produits_exposant.map((item) => (
+                    <SwiperSlide key={item.id}>
+                        <div className={`card-2 bg-11 wow animate__animated animate__fadeInUp`}>
                             <figure className=" img-hover-scale overflow-hidden">
                                 <a>
-                                    <img src={`assets/imgs/shop/${item.img}`} alt="" />
+                                    <img src={`/assets/imgs/shop/cat-11.png`} alt="" />
                                 </a>
                             </figure>
                             <h6>
-                                <a>{item.title}</a>
+                                <a>{item['attributes']['TITRE_FR']}</a>
                             </h6>
-                            <span>26 items</span>
                         </div>
                     </SwiperSlide>
+                    
                 ))}
             </Swiper>
 
