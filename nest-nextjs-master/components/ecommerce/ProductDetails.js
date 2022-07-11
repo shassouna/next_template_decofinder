@@ -25,13 +25,10 @@ const ProductDetails = ({
     autres_produits_exposant,
     autres_produits_typeprod,
     autres_typeprods,
-    product,
-    cartItems,
+    revendeurs,
     addToCompare,
     addToCart,
     addToWishlist,
-    increaseQuantity,
-    decreaseQuantity,
     quickView,
 }) => {
     const [quantity, setQuantity] = useState(1);
@@ -52,11 +49,7 @@ const ProductDetails = ({
         toast("Added to Wishlist !");
     };
 
-    const inCart = cartItems.find((cartItem) => cartItem.id === product.id);
-
-    console.log(inCart);
-    console.log(product)
-    console.log(produit.attributes)    
+    //const inCart = cartItems.find((cartItem) => cartItem.id === product.id);
 
     return (
         <>
@@ -72,7 +65,7 @@ const ProductDetails = ({
                                                 <i className="fi-rs-search"></i>
                                             </span>
                                             <div className="product-image-slider">
-                                                <ThumbSlider product={product} />
+                                                <ThumbSlider />
                                             </div>
                                         </div>
                                     </div>
@@ -88,32 +81,28 @@ const ProductDetails = ({
                                                 <button className="detail-info-header-button">Suivre</button>
                                             </div>
                                             <h2 className="title-detail">{typeprod['attributes']['LIB_FR'].split("-").join(" ")+ " - "+ produit['attributes']['TITRE_FR']}</h2>
-                                            <div className="product-detail-rating">
-                                                <div className="product-rate-cover text-end">
-                                                    <div className="product-rate d-inline-block">
-                                                        <div className="product-rating" style={{ width: "90%" }}></div>
-                                                    </div>
-                                                    <span className="font-small ml-5 text-muted"> (32 reviews)</span>
-                                                </div>
-                                            </div>
                                             <div className="clearfix product-price-cover">
                                                 <div className="product-price primary-color float-left">
                                                     <span className="current-price  text-brand">{produit['attributes']['TARIF_PUB']+" €"}</span>
-                                                    <span>
-                                                        <span className="save-price font-md color3 ml-15">{product.discount.percentage}% Off</span>
-                                                        <span className="old-price font-md ml-15">{product.oldPrice ? `$ ${product.oldPrice}` : null}</span>
-                                                    </span>
                                                 </div>
                                             </div>
                                             <div className="bt-1 border-color-1 mt-30 mb-30"></div>
                                             <div style={{display:'flex', flexDirection:'column', justifyContent:'center', marginRight:"10px", marginLeft:"10px"}}>
-                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>SITE WEB</button>
-                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>QUESTION / DEVIS</button>
-                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>POINTS DE VENTE</button>
-                                                <button className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>METTRE EN FAVORIS</button>
+                                                <a target="_blank" href={exposant['attributes']['SRV_INTERNET']}>
+                                                <button style={{width:'100%'}} className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>SITE WEB</button>
+                                                </a>
+                                                <a href={"#"}>
+                                                <button style={{width:'100%'}} className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>QUESTION / DEVIS</button>
+                                                </a>
+                                                <a href={"#"}>
+                                                <button style={{width:'100%'}} className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>POINTS DE VENTE</button>
+                                                </a>
+                                                <a href={"#"}>
+                                                <button style={{width:'100%'}} className="button button-add-to-cart"><i className="fi-rs-shopping-cart mr-5"></i>METTRE EN FAVORIS</button>
+                                                </a>
                                             </div>
                                             <div className="mobile-social-icon">
-                                                <a href="#">
+                                                <a target="_blank" href="https://www.facebook.com/decofinder">
                                                     <Image
                                                         src="/assets/imgs/theme/icons/icon-facebook-white.svg"
                                                         alt=""
@@ -122,7 +111,7 @@ const ProductDetails = ({
                                                         className="mobile-social-icon-item"
                                                     />
                                                 </a>
-                                                <a href="#">
+                                                <a target="_blank" href="https://twitter.com/decofinder">
                                                     <Image
                                                         src="/assets/imgs/theme/icons/icon-twitter-white.svg"
                                                         alt=""
@@ -131,7 +120,7 @@ const ProductDetails = ({
                                                         className="mobile-social-icon-item"
                                                     />
                                                 </a>
-                                                <a href="#">
+                                                <a target="_blank" href="https://www.instagram.com/decofinder/">
                                                     <Image
                                                         src="/assets/imgs/theme/icons/icon-instagram-white.svg"
                                                         alt=""
@@ -140,7 +129,7 @@ const ProductDetails = ({
                                                         className="mobile-social-icon-item"
                                                     />
                                                 </a>
-                                                <a href="#">
+                                                <a target="_blank" href="https://www.pinterest.fr/decofinder/">
                                                     <Image
                                                         src="/assets/imgs/theme/icons/icon-pinterest-white.svg"
                                                         alt=""
@@ -149,13 +138,6 @@ const ProductDetails = ({
                                                         className="mobile-social-icon-item"
                                                     />
                                                 </a>
-                                            </div>
-                                            <div className="detail-extralink">
-                                                <div className="product-extra-link2-button">
-                                                    <button className="button button-add-to-cart2">
-                                                        Add to cart
-                                                    </button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -167,10 +149,18 @@ const ProductDetails = ({
                                             <h2 className="title-detail" style={{ marginTop:"20px",fontWeight: 700, fontSize: '24px', lineHeight: '32px'}}>Acheter en ligne</h2>
                                             <div className="bt-1 border-color-1 mt-30 mb-30"></div>
                                             <div style={{display:'flex', flexDirection:'column', justifyContent:'center', marginRight:"10px", marginLeft:"10px"}}>
-                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
-                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
-                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
-                                                <button className="button button-add-to-cart"><p>Roche Bobois</p><div><i className="fi-rs-shopping-cart mr-5"></i>42£</div></button>
+                                            {
+                                            revendeurs.map(val=>{
+                                                return (
+                                                    <a target="_blank" href={val["lien_revendeur_produit"]["attributes"]["URL_PAGE"]}>
+                                                        <button style={{width:"100%"}} className="button button-add-to-cart">
+                                                        <p>{val['exposant']['attributes']['NOM']}</p>
+                                                        <div><i className="fi-rs-shopping-cart mr-5"></i></div>
+                                                        </button>
+                                                    </a> 
+                                                )
+                                            })
+                                            }
                                             </div>
                                         </div>
                                     </div>
@@ -188,7 +178,7 @@ const ProductDetails = ({
                                             <div className="col-12">
                                                 <div className="row related-products position-relative">
                                                     <RelatedSlider 
-                                                    produits={autres_produits_exposant_typeprod}
+                                                    produits={autres_produits_exposant_typeprod.filter(e=>e['attributes']['TITRE_FR'] != "NULL")}
                                                     exposant={exposant}
                                                     />
                                                 </div>
@@ -215,7 +205,7 @@ const ProductDetails = ({
                                             <div className="col-12">
                                                 <div className="row related-products position-relative">
                                                     <RelatedSlider 
-                                                    produits={autres_produits_typeprod}
+                                                    produits={autres_produits_typeprod.filter(e=>e['attributes']['TITRE_FR'] != "NULL")}
                                                     exposant={exposant}
                                                     />
                                                 </div>

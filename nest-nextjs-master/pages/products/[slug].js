@@ -1,19 +1,24 @@
 import React from "react";
 import ProductDetails from "../../components/ecommerce/ProductDetails";
 import Layout from '../../components/layout/Layout';
-import { server } from "../../config/index";
-import { findProductIndex } from "../../util/util";
 
 // My imports
 import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const ProductId = (props) => {
+
+    const router = useRouter()
+
+    if(router.isFallback){
+        return <h1>Loading ... </h1>
+    }
+
     return (
         <>
          {<Layout parent="Home" sub="Shop" subChild={props.produit['attributes']['TITRE_FR']}>
             <div className="container">
                 <ProductDetails 
-                product={props.product} 
                 produit={props.produit} 
                 exposant={props.exposant} 
                 pays={props.pays}
@@ -22,6 +27,7 @@ const ProductId = (props) => {
                 autres_produits_exposant={props.autres_produits_exposant}
                 autres_produits_typeprod={props.autres_produits_typeprod}
                 autres_typeprods={props.autres_typeprods}
+                revendeurs={props.revendeurs}
                 />
             </div>
          </Layout>}
@@ -29,20 +35,21 @@ const ProductId = (props) => {
     );
 };
 
+export async function getStaticPaths() {
 
+    const paths = []
 
-    export async function getServerSideProps (params) {
-    
-    /*const request = await fetch(`${server}/static/product.json`);
-    const data = await request.json();
+    return {
+        paths:paths,
+        fallback : true
+    }
+}
 
-    const index = findProductIndex(data, params.query.slug);
-    // console.log(params);
+export async function getStaticProps (context) {
 
-    return { product: data[index] };*/
     const qs = require("qs")
 
-    const res = await axios.get(`http://localhost:1337/api/produits/bote-couvert-th-style-ancienne-bote-couvert-en-bois-tiroir-40-cm-353873`)
+    const res = await axios.get(`http://localhost:1337/api/produits/pismo-427641`)
 
     const query = qs.stringify(
         {
@@ -137,11 +144,36 @@ const ProductId = (props) => {
         )    
     const res8 = await axios.get(`http://localhost:1337/api/typeprods?${query7}`)
 
-    
-    const request = await fetch(`${server}/static/product.json`);
-    const data = await request.json();
+    const query8 = qs.stringify(
+        {
+            filters: {
+                        NUMERO: 1279790
+                    }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+        ) 
+        
+    const revendeurs = []
+    const res9 = await axios.get(`http://localhost:1337/api/lienrevendeurproduits?${query8}`)
 
-    const index = findProductIndex(data, params.query.slug);
+    for (let lien_revendeur_produit of res9.data.data) {
+        const query = qs.stringify(
+            {
+                filters: 
+                {
+                    CLE_EXPOSANT: { $eq: lien_revendeur_produit["attributes"]["CLE_EXPOSANT_REVENDEUR"] } 
+                }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        )
+        const res = await axios.get(`http://localhost:1337/api/exposants?${query}`)
+        revendeurs.push({exposant:res.data.data[0], lien_revendeur_produit:lien_revendeur_produit})
+    }
+   
 
     return {
         props: {
@@ -153,7 +185,7 @@ const ProductId = (props) => {
             autres_produits_exposant : res6.data.data,
             autres_produits_typeprod : res7.data.data,
             autres_typeprods : res8.data.data,
-            product: data[index]
+            revendeurs : revendeurs,
         }, 
       }
 };

@@ -1,25 +1,11 @@
-import { useEffect, useState } from "react";
+
 import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { fetchByCatagory } from "../../redux/action/product";
 import SingleProduct from "./../ecommerce/SingleProduct";
 
 SwiperCore.use([Navigation]);
 
 const RelatedSlider = (props) => {
-
-    const [related, setRelated] = useState([]);
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    const fetchProducts = async () => {
-        // With Category
-        const allProducts = await fetchByCatagory("/static/product.json");
-        setRelated(allProducts);
-    };
-    console.log(props.autres_typeprods)
 
     return (
         <>
@@ -33,20 +19,18 @@ const RelatedSlider = (props) => {
                 }}
                 className="custom-class"
             >
-                {props.produits&&related.map((product, i) => (
+                {props.produits&&props.produits.map((produit, i) => (
                     <SwiperSlide key={i}>
                         <SingleProduct 
-                        product={product} 
-                        produit={props.produits[2]}
+                        produit={produit}
                         exposant={props.exposant}
                         />
                     </SwiperSlide>
                 ))}
-                {props.autres_typeprods&&related.map((product, i) => (
+                {props.autres_typeprods&&props.autres_typeprods.map((typeproduit, i) => (
                     <SwiperSlide key={i}>
                         <SingleProduct 
-                        product={product} 
-                        typeproduit={props.autres_typeprods[0]}
+                        typeproduit={typeproduit}
                         exposant={props.exposant}
                         />
                     </SwiperSlide>

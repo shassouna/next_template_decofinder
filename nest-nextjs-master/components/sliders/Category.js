@@ -4,6 +4,9 @@ import SwiperCore, { Autoplay, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { updateProductCategory } from "./../../redux/action/productFiltersAction";
 
+// My import 
+import Link from "next/link"
+
 SwiperCore.use([Navigation, Autoplay]);
 const data = [
     {
@@ -92,7 +95,6 @@ const CategorySlider = (props) => {
             }
         });
 
-        console.log("Click");
     };
 
     return (
@@ -123,30 +125,18 @@ const CategorySlider = (props) => {
                 }}
             >
                 {props.autres_produits_exposant&&props.autres_produits_exposant.map((item) => (
+                    console.log(item["attributes"]),
                     <SwiperSlide key={item.id}>
-                        <div className={`card-2 bg-11 wow animate__animated animate__fadeInUp`}>
+                        <div className={`card-2 bg-8 wow animate__animated animate__fadeInUp`}>
                             <figure className=" img-hover-scale overflow-hidden">
-                                <a>
+                                <Link href={(item["attributes"]["slug"]+"").toString()}>
                                     <img src={`/assets/imgs/shop/cat-11.png`} alt="" />
-                                </a>
+                                </Link>
                             </figure>
-                            <h6>
-                                <a>{item['attributes']['TITRE_FR']}</a>
-                            </h6>
                         </div>
                     </SwiperSlide>
-                    
                 ))}
             </Swiper>
-
-            <div className="slider-arrow slider-arrow-2 flex-right carausel-10-columns-arrow" id="carausel-10-columns-arrows">
-                <span className="slider-btn slider-prev slick-arrow custom_prev_ct1">
-                    <i className="fi-rs-arrow-small-left"></i>
-                </span>
-                <span className="slider-btn slider-next slick-arrow custom_next_ct1">
-                    <i className="fi-rs-arrow-small-right"></i>
-                </span>
-            </div>
         </>
     );
 };
