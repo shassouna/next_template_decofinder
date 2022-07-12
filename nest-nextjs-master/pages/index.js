@@ -14,13 +14,16 @@ import Link from "next/link";
 
 // Our imports
 import axios from 'axios';
+import Category from "./../components/sliders/Category";
+
 
 export default function Home(props) {
+    console.log(props)
     return (
         <>
             <IntroPopup />
 
-            <Layout props={props} noBreadcrumb="d-none">
+            <Layout superunivers_univers_categories={props.superunivers_univers_categories} noBreadcrumb="d-none">
                 <section className="home-slider position-relative mb-30">
                     <div className="container">
                         <div className="home-slide-cover mt-30">
@@ -102,15 +105,114 @@ export default function Home(props) {
                         <FeatchDeals />
                     </div>
                 </section>
-
                 <Bottom />
-
                 <QuickView />
             </Layout>
         </>
     );
 }
+export async function getStaticProps(context) {
+    
+    // SuperUinvers begin
+    const qs =require('qs')
+    const querySuperUnivers = qs.stringify(
+        {
+            filters: {
+                        CLE_LANG : { $eq: "0" }
+                    }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    ) 
+    const res = await axios.get(`http://localhost:1337/api/superuniversdetailss?${querySuperUnivers}`)
+    // SuperUnivers end
 
+    
+    // For each superunivers begin
+    const superunivers_univers = []
+    for (let superunivers of res.data.data) {
+
+        // Univers begin
+        const queryUnivers = qs.stringify(
+            {
+                filters: {
+                            CLE_SUPERUNIVERS: { $eq: superunivers["attributes"]["CLE_SUPERUNIVERS"] },
+                        }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        ) 
+        // get keys of all univers for the superunivers begin
+        const resunivers = await axios.get(`http://localhost:1337/api/rayonbases?${queryUnivers}`)
+
+        const univers_keys = []
+
+        for (let superunivers of resunivers.data.data) {
+            univers_keys.push(superunivers['attributes']['CLE_RAYON'])
+        }
+        // get keys of all univers for the superunivers end
+
+        const queryUniversDetails = qs.stringify(
+            {
+                filters: {
+                            CLE_RAYON : { $in : univers_keys },
+                            CLE_LANG : { $eq : "0" }
+                        }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        ) 
+        const resUniversDetails = await axios.get(`http://localhost:1337/api/rayondetails?${queryUniversDetails}`)
+
+        const categories_univers = []
+        for (let univers of resUniversDetails.data.data) {
+            // Categories Begin
+                const queryCategory = qs.stringify(
+                    {
+                        filters : {           
+                                    CLE_RAYON: { $eq: univers['attributes']['CLE_RAYON'] }              
+                                }
+                    },
+                    {
+                        encodeValuesOnly: true,
+                    }
+                ) 
+                const resCategory = await axios.get(`http://localhost:1337/api/typeprods?${queryCategory}`) 
+                categories_univers.push({univers: univers, categories : resCategory.data.data.filter(e=>e["attributes"]["CLE_TYPE_PROD"]==e["attributes"]["CLE_TYPE_PROD_CATEGORIE"])})
+            }
+            // Categories End
+
+        superunivers_univers.push({superunivers:superunivers, categories_univers:categories_univers})
+        // Univers fin
+    }
+    // End For each superunivers 
+
+    return {
+        props: {
+            superunivers_univers_categories : superunivers_univers
+        }, 
+      }
+}
+        /*const categories_univers = []
+        for (let univers of resUniversDetails.data.data) {
+            console.log ("/////////////////////// " + univers['attributes']['CLE_RAYON'] )
+            const queryCategory = qs.stringify(
+                {
+                    filters : {       
+                                CLE_RAYON: { $eq: univers['attributes']['CLE_RAYON'] }
+                            }
+                },
+                {
+                    encodeValuesOnly: true,
+                }
+            ) 
+            const resCategory = await axios.get(`http://localhost:1337/api/typeprods?${queryCategory}`)    
+            console.log(resCategory.data.data.length)
+            categories_univers.push({resCategory.data.data) 
+        }*/
 /*export async function getStaticProps(context) {
     const qs =require('qs')
 

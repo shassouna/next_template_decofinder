@@ -184,7 +184,7 @@ const MobileMenu = ({ isToggled, toggleClick }) => {
                                         >
                                             <li>
                                                 <Link href="/index">
-                                                    <a>Home 1</a>
+                                                    <a>Home 5</a>
                                                 </Link>
                                             </li>
                                             <li>
