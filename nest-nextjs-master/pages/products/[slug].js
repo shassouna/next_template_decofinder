@@ -16,7 +16,8 @@ const ProductId = (props) => {
 
     return (
         <>
-         {<Layout parent="Home" sub="Shop" subChild={props.produit['attributes']['TITRE_FR']}>
+         {<Layout parent="Home" sub="Shop" subChild={props.produit['attributes']['TITRE_FR']}
+         superunivers_univers_categories = {props.superunivers_univers_categories}>
             <div className="container">
                 <ProductDetails 
                 produit={props.produit} 
@@ -47,7 +48,83 @@ export async function getStaticPaths() {
 
 export async function getStaticProps (context) {
 
-    const qs = require("qs")
+        // SuperUinvers begin
+    const qs =require('qs')
+    const querySuperUnivers = qs.stringify(
+        {
+            filters: {
+                        CLE_LANG : { $eq: "0" }
+                    }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    ) 
+    const resSuperUnivers = await axios.get(`http://localhost:1337/api/superuniversdetailss?${querySuperUnivers}`)
+    // SuperUnivers end
+
+    
+    // For each superunivers begin
+    const superunivers_univers = []
+    for (let superunivers of resSuperUnivers.data.data) {
+
+        // Univers begin
+        const queryUnivers = qs.stringify(
+            {
+                filters: {
+                            CLE_SUPERUNIVERS: { $eq: superunivers["attributes"]["CLE_SUPERUNIVERS"] },
+                        }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        ) 
+        // get keys of all univers for the superunivers begin
+        const resunivers = await axios.get(`http://localhost:1337/api/rayonbases?${queryUnivers}`)
+
+        const univers_keys = []
+
+        for (let superunivers of resunivers.data.data) {
+            univers_keys.push(superunivers['attributes']['CLE_RAYON'])
+        }
+        // get keys of all univers for the superunivers end
+
+        const queryUniversDetails = qs.stringify(
+            {
+                filters: {
+                            CLE_RAYON : { $in : univers_keys },
+                            CLE_LANG : { $eq : "0" }
+                        }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        ) 
+        const resUniversDetails = await axios.get(`http://localhost:1337/api/rayondetails?${queryUniversDetails}`)
+
+        const categories_univers = []
+        for (let univers of resUniversDetails.data.data) {
+            // Categories Begin
+                const queryCategory = qs.stringify(
+                    {
+                        filters : {           
+                                    CLE_RAYON: { $eq: univers['attributes']['CLE_RAYON'] }              
+                                }
+                    },
+                    {
+                        encodeValuesOnly: true,
+                    }
+                ) 
+                const resCategory = await axios.get(`http://localhost:1337/api/typeprods?${queryCategory}`) 
+                categories_univers.push({univers: univers, categories : resCategory.data.data.filter(e=>e["attributes"]["CLE_TYPE_PROD"]==e["attributes"]["CLE_TYPE_PROD_CATEGORIE"])})
+            }
+            // Categories End
+
+        superunivers_univers.push({superunivers:superunivers, categories_univers:categories_univers})
+        // Univers fin
+    }
+    // End For each superunivers 
+
 
     const res = await axios.get(`http://localhost:1337/api/produits/pismo-427641`)
 
@@ -186,6 +263,7 @@ export async function getStaticProps (context) {
             autres_produits_typeprod : res7.data.data,
             autres_typeprods : res8.data.data,
             revendeurs : revendeurs,
+            superunivers_univers_categories : superunivers_univers,
         }, 
       }
 };

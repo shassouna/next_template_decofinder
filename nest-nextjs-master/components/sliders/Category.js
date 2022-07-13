@@ -124,8 +124,9 @@ const CategorySlider = (props) => {
                     }
                 }}
             >
-                {props.autres_produits_exposant&&props.autres_produits_exposant.map((item) => (
-                    console.log(item["attributes"]),
+                {
+                // case products
+                props.autres_produits_exposant&&props.autres_produits_exposant.map((item) => (
                     <SwiperSlide key={item.id}>
                         <div className={`card-2 bg-8 wow animate__animated animate__fadeInUp`}>
                             <figure className=" img-hover-scale overflow-hidden">
@@ -133,6 +134,21 @@ const CategorySlider = (props) => {
                                     <img src={`/assets/imgs/shop/cat-11.png`} alt="" />
                                 </Link>
                             </figure>
+                        </div>
+                    </SwiperSlide>
+                ))}
+                {
+                // case products
+                props.superunivers_univers_categories&&props.superunivers_univers_categories.map((item) => (
+                    console.log(item.superunivers["attributes"]["LIB"]),
+                    <SwiperSlide key={item.superunivers.id}>
+                        <div className={`card-2 bg-8 wow animate__animated animate__fadeInUp`}>
+                            <figure className=" img-hover-scale overflow-hidden">
+                                <Link href={(item.superunivers["attributes"]["slug"]+"").toString()}>
+                                    <img src={`/assets/imgs/shop/cat-11.png`} alt="" />
+                                </Link>
+                            </figure>
+                            <p style={{color:"white"}}>{item.superunivers["attributes"]["LIB"]}</p>
                         </div>
                     </SwiperSlide>
                 ))}

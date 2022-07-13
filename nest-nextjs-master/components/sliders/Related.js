@@ -35,6 +35,13 @@ const RelatedSlider = (props) => {
                         />
                     </SwiperSlide>
                 ))}
+                {props.selections&&props.selections.map((selection, i) => (
+                    <SwiperSlide key={i}>
+                        <SingleProduct 
+                        selection={selection}
+                        />
+                    </SwiperSlide>
+                ))}
             </Swiper>
 
             <div

@@ -24,12 +24,16 @@ function cleanHTML(str)
 const SingleProduct = ({
     produit,
     exposant,
+    selection,
     typeproduit,
     addToCart,
     addToCompare,
     addToWishlist,
     openQuickView,
 }) => {
+
+    console.log(selection)
+
     const handleCart = (product) => {
         addToCart(product);
         toast("Product added to Cart !");
@@ -152,6 +156,55 @@ const SingleProduct = ({
                                 <a className="add">
                                     <i className="fi-rs-shopping-cart mr-5"></i> Tous les produits
                                 </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        }
+
+        {   // case selection FourProducts
+            selection && 
+                <div className="product-cart-wrap mb-30" onMouseOver={handleShowDescription} onMouseLeave={handleHideDescription}>
+                    <div className="product-img-action-wrap">
+                        <div className="product-img product-img-zoom">
+                            <Link
+                                href="/products/[slug]"
+                                as={`/products/${"product.slug"}`}
+                            >
+                                <a>
+                                    <img
+                                        className="default-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                    <img
+                                        className="hover-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                </a>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="product-content-wrap">
+                    <div className="product-category">
+                            <Link href="/products">
+                                <a>{selection.exposant['attributes']['NOM']}</a>
+                            </Link>
+                    </div>
+                    <h2>
+                            <Link
+                                href="/products/[slug]"
+                                as={`/products/${"product.slug"}`}
+                            >
+                                <a>{selection.produit["attributes"]["TITRE_FR"]!="NULL"?selection.produit["attributes"]["TITRE_FR"]:selection.produit["attributes"]["MODELES"]}</a>
+                            </Link>
+                        </h2>
+                        <div className="product-card-bottom">
+                            <div className="product-category">
+                                <Link href="/products">
+                                    <a>{selection.typeprod['attributes']['LIB_FR']}</a>
+                                </Link>
                             </div>
                         </div>
                     </div>

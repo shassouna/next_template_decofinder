@@ -9,73 +9,21 @@ import Deals1 from "./../components/elements/Deals1";
 import IntroPopup from "./../components/elements/IntroPopup";
 import Layout from "./../components/layout/Layout";
 import CategorySlider from "./../components/sliders/Category";
-import Intro1 from "./../components/sliders/Intro4";
+import Intro1 from "./../components/sliders/Intro1";
 import Link from "next/link";
 
 // Our imports
 import axios from 'axios';
-import Category from "./../components/sliders/Category";
+import RelatedSlider from "./../components/sliders/Related";
 
 
 export default function Home(props) {
-    console.log(props)
+    console.log(props.selections)
     return (
         <>
             <IntroPopup />
 
             <Layout superunivers_univers_categories={props.superunivers_univers_categories} noBreadcrumb="d-none">
-                <section className="home-slider position-relative mb-30">
-                    <div className="container">
-                        <div className="home-slide-cover mt-30">
-                            <Intro1 />
-                        </div>
-                    </div>
-                </section>
-
-                <section className="popular-categories section-padding">
-                    <div className="container wow animate__fadeIn animate__animated">
-                        <div className="section-title">
-                            <div className="title">
-                                <h3>Featured Categories</h3>
-                                <ul className="list-inline nav nav-tabs links">
-                                    <li className="list-inline-item nav-item">
-                                        <Link href="/products">
-                                            <a className="nav-link">Cake & Milk</a>
-                                        </Link>
-                                    </li>
-                                    <li className="list-inline-item nav-item">
-                                        <Link href="/products">
-                                            <a className="nav-link">Coffes & Teas</a>
-                                        </Link>
-                                    </li>
-                                    <li className="list-inline-item nav-item">
-                                        <Link href="/products">
-                                            <a className="nav-link active">Pet Foods</a>
-                                        </Link>
-                                    </li>
-                                    <li className="list-inline-item nav-item">
-                                        <Link href="/products">
-                                            <a className="nav-link">Vegetables</a>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="carausel-10-columns-cover position-relative">
-                            <div className="carausel-10-columns" id="carausel-10-columns">
-                                <CategorySlider />
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section className="banners mb-25">
-                    <div className="container">
-                        <div className="row">
-                            <Banner5 />
-                        </div>
-                    </div>
-                </section>
 
                 <section className="product-tabs section-padding position-relative">
                     <div className="container">
@@ -86,8 +34,30 @@ export default function Home(props) {
                 </section>
 
                 <section className="section-padding pb-5">
-                    <div className="container">
-                        <FetchTabSlider />
+                <div className="col-12" style={{width:"90%", marginLeft:"5%"}}>
+                    {<div className="row related-products position-relative" 
+                    >
+                            <RelatedSlider 
+                            //produits={props.fourproducts.filter(e=>e['attributes']['TITRE_FR'] != "NULL")}
+                           // exposant={exposant}
+                           selections={props.selections}
+                            />
+                        </div>}
+                    </div>
+                </section>
+
+                <section className="popular-categories section-padding">
+                    <div className="container wow animate__fadeIn animate__animated">
+                        <div className="section-title">
+                            <div className="title">
+                                <h3>Tous les Mega Univers :</h3>
+                            </div>
+                        </div>
+                        <div className="carausel-10-columns-cover position-relative">
+                            <div className="carausel-10-columns" id="carausel-10-columns">
+                                <CategorySlider superunivers_univers_categories={props.superunivers_univers_categories}/>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -190,9 +160,63 @@ export async function getStaticProps(context) {
     }
     // End For each superunivers 
 
+    // Begin four products
+    const queryFourProducts = qs.stringify(
+        {
+            filters: {
+                $or: [
+                    {selection: { $eq: true }},
+                    {coupdecoeur: { $eq: true }},
+                    {achatenligne: { $eq: true }},     
+                    {asaisir: { $eq: true }}               
+                ]
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+        )
+    const resFourProducts = await axios.get(`http://localhost:1337/api/produits?${queryFourProducts}`)  
+
+    const selections = []
+    for (let produit of resFourProducts.data.data) {
+        // Begin exposant four products
+        const queryExposant = qs.stringify (
+            {
+                filters: {
+                    CLE_EXPOSANT: { $eq: produit['attributes']['CLE_EXPOSANT'] } 
+                }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        )   
+        const resExposant = await axios.get(`http://localhost:1337/api/exposants?${queryExposant}`) 
+        // End exposant four products
+
+        // Begin typeprod for product
+        const queryTypeprod = qs.stringify (
+            {
+                filters: {
+                    CLE_TYPE_PROD: { $eq: produit['attributes']['CLE_TYPE_PROD'] } 
+                }
+            },
+            {
+                encodeValuesOnly: true,
+            }
+        )  
+        const resTypeprod = await axios.get(`http://localhost:1337/api/typeprods?${queryTypeprod}`) 
+        // End typeprod for product
+
+        selections.push({produit : produit, typeprod : resTypeprod.data.data[0], exposant : resExposant.data.data[0]})
+    }
+    // End four products
+
     return {
         props: {
-            superunivers_univers_categories : superunivers_univers
+            superunivers_univers_categories : superunivers_univers,
+            fourproducts : resFourProducts.data.data,
+            selections : selections
         }, 
       }
 }
