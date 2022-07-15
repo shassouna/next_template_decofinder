@@ -42,6 +42,13 @@ const RelatedSlider = (props) => {
                         />
                     </SwiperSlide>
                 ))}
+                {props.inspirations&&props.inspirations.map((inspiration, i) => (
+                    <SwiperSlide key={i}>
+                        <SingleProduct 
+                        inspiration={inspiration}
+                        />
+                    </SwiperSlide>
+                ))}
             </Swiper>
 
             <div

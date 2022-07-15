@@ -707,7 +707,7 @@ h6,
 .display-2,
 .heading-sm-1 {
   font-family: "Quicksand", sans-serif;
-  color: #253D4E;
+  color: #000000;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -7995,10 +7995,10 @@ span.fi-rs-apps {
 }
 
 .main-menu > nav > ul > li ul.mega-menu li ul li a {
-  font-size: 15px;
+  font-size: 0.9rem;
   color: #7E7E7E;
   display: block;
-  line-height: 1.4;
+  line-height: 0.75 ;
 }
 
 .main-menu > nav > ul > li ul.mega-menu li ul li a:hover {
@@ -11107,7 +11107,7 @@ footer .hotline img {
 
 @media only screen and (min-width: 1200px) {
   .container {
-    max-width: 1610px;
+    max-width: 90%;
   }
   .col-lg-1-5 {
     width: 20%;
@@ -11817,4 +11817,32 @@ footer .hotline img {
   color:#ADC07A;
   background-color: #FBFBFB;
   border-radius:12px;
+}
+
+.button.button-add-to-cart-home {
+  padding: 8px 40px;
+  margin-bottom: 18px;
+  border: 1px solid #343A40;
+  border-radius:2px;
+  background-color:#FFFFFF;
+  color:#ADC07A;
+}
+.button.button-add-to-cart-home:hover {
+  color:#FFFFFF;
+  background-color: gray;
+  border-radius:2px;
+}
+
+.button.button-add-to-cart-inspirations {
+  padding: 8px 40px;
+  margin-bottom: 18px;
+  border: 1px solid #343A40;
+  border-radius:2px;
+  background-color:rgba(255, 255, 255, .1);;
+  color:#FFFFFF;
+}
+.button.button-add-to-cart-inspirations:hover {
+  color:GRAY;
+  background-color: #FFFFFF;
+  border-radius:2px;
 }

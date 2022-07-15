@@ -26,6 +26,7 @@ const SingleProduct = ({
     exposant,
     selection,
     typeproduit,
+    inspiration,
     addToCart,
     addToCompare,
     addToWishlist,
@@ -187,26 +188,66 @@ const SingleProduct = ({
                         </div>
                     </div>
                     <div className="product-content-wrap">
-                    <div className="product-category">
+                    <h2 >
                             <Link href="/products">
-                                <a>{selection.exposant['attributes']['NOM']}</a>
+                                <a style={{color:"#000000"}}>{selection.exposant['attributes']['NOM'].toUpperCase()}</a>
+                            </Link>
+                    </h2>
+                    <div className="product-card-bottom">
+                            <Link href="/products">
+                                <a>{selection.typeprod['attributes']['LIB_FR']}</a>
                             </Link>
                     </div>
-                    <h2>
+                    <div className="product-category">
+                        <Link
+                            href="/products/[slug]"
+                            as={`/products/${"product.slug"}`}
+                        >
+                            <a>{selection.produit["attributes"]["TITRE_FR"]!="NULL"?selection.produit["attributes"]["TITRE_FR"]:selection.produit["attributes"]["MODELES"]}</a>
+                        </Link>
+                        </div>
+                    </div>
+                </div>
+        }
+
+{   // case inspiration FourProducts
+            inspiration && 
+                <div className="product-cart-wrap mb-30" onMouseOver={handleShowDescription} onMouseLeave={handleHideDescription}>
+                    <div className="product-img-action-wrap">
+                        <div className="product-img product-img-zoom">
                             <Link
                                 href="/products/[slug]"
                                 as={`/products/${"product.slug"}`}
                             >
-                                <a>{selection.produit["attributes"]["TITRE_FR"]!="NULL"?selection.produit["attributes"]["TITRE_FR"]:selection.produit["attributes"]["MODELES"]}</a>
+                                <a>
+                                    <img
+                                        className="default-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                    <img
+                                        className="hover-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                </a>
                             </Link>
-                        </h2>
-                        <div className="product-card-bottom">
-                            <div className="product-category">
-                                <Link href="/products">
-                                    <a>{selection.typeprod['attributes']['LIB_FR']}</a>
-                                </Link>
-                            </div>
                         </div>
+                    </div>
+                    <div className="product-content-wrap">
+                    <div className="product-category" style={{display:"flex", justifyContent:"center", marginTop:"10px"}}>
+                        <Link
+                            href="/products/[slug]"
+                            as={`/products/${"product.slug"}`}
+                        >
+                            <a>Inspiration</a>
+                        </Link>
+                    </div>
+                    <h2 style={{display:"flex", justifyContent:"center"}}>
+                            <Link href="/products">
+                                <a style={{color:"#000000"}}>{inspiration.exposant['attributes']['NOM'].toUpperCase()}</a>
+                            </Link>
+                    </h2>
                     </div>
                 </div>
         }

@@ -21,32 +21,37 @@ export default function Home(props) {
     console.log(props.selections)
     return (
         <>
-            <IntroPopup />
+
 
             <Layout superunivers_univers_categories={props.superunivers_univers_categories} noBreadcrumb="d-none">
 
-                <section className="product-tabs section-padding position-relative">
-                    <div className="container">
-                        <div className="col-lg-12">
-                            <CategoryTab />
+                <section className="section-padding pb-5">
+                    <div className="col-12" style={{width:"90%", marginLeft:"5%"}}>
+                         <div className="row related-products position-relative" >
+                            <RelatedSlider 
+                           selections={props.selections}
+                            />
                         </div>
                     </div>
                 </section>
-
-                <section className="section-padding pb-5">
-                <div className="col-12" style={{width:"90%", marginLeft:"5%"}}>
-                    {<div className="row related-products position-relative" 
-                    >
-                            <RelatedSlider 
-                            //produits={props.fourproducts.filter(e=>e['attributes']['TITRE_FR'] != "NULL")}
-                           // exposant={exposant}
-                           selections={props.selections}
-                            />
-                        </div>}
+                <section style={{marginTop:"55px"}}>
+                    <div style={{display:'flex', flexDirection:'row', flexWrap:"wrap", justifyContent:'center', width:"90%", marginLeft:"5%"}}>
+                        <a  target="_blank" href={"#"} style={{width:'20%', minWidth:"380px", marginLeft:"2.5%", marginRight:"2.5%"}}>
+                        <button style={{width:'100%'}} className="button button-add-to-cart-home">Toutes les sélections du jury</button>
+                        </a>
+                        <a href={"#"} style={{width:'20%', minWidth:"380px", marginLeft:"2.5%", marginRight:"2.5%"}}>
+                        <button style={{width:'100%'}} className="button button-add-to-cart-home">Tous les coups de coeur</button>
+                        </a>
+                        <a href={"#"} style={{width:'20%',minWidth:"380px", marginLeft:"2.5%", marginRight:"2.5%"}}>
+                        <button style={{width:'100%'}} className="button button-add-to-cart-home">Tous les achats en ligne</button>
+                        </a>
+                        <a href={"#"} style={{width:'20%', minWidth:"380px", marginLeft:"2.5%", marginRight:"2.5%"}}>
+                        <button style={{width:'100%'}} className="button button-add-to-cart-home">Toutes les promotions</button>
+                        </a>
                     </div>
                 </section>
 
-                <section className="popular-categories section-padding">
+                <section className="popular-categories section-padding" style={{marginTop:"75px"}}>
                     <div className="container wow animate__fadeIn animate__animated">
                         <div className="section-title">
                             <div className="title">
@@ -60,19 +65,48 @@ export default function Home(props) {
                         </div>
                     </div>
                 </section>
-
-                <section className="section-padding pb-5">
-                    <div className="container">
-                        <div className="section-title wow animate__animated animate__fadeIn" data-wow-delay="0">
-                            <h3 className="">Deals Of The Day</h3>
-                            <Link href="/products">
-                                <a className="show-all">
-                                    All Deals
-                                    <i className="fi-rs-angle-right"></i>
-                                </a>
-                            </Link>
+                <section>
+                    <div className="container  pt-50">
+                        <div className="row">
+                            <div className="col-xl-10 col-lg-12 m-auto">
+                                <section className="row align-items-center mb-50">
+                                    <div className="col-lg-6">
+                                            <h2 className="mb-10">Le salon en ligne de la décoration et de l’ameublement depuis 1994 !</h2>
+                                            <p className="mb-25">Decofinder est conçu pour permettre aux acheteurs, particuliers comme professionnels, de trouver des produits, des entreprises et de la documentation. Pensé comme un outil de découverte ayant pour objectif de faciliter la recherche, il offre également aux entreprises de meilleurs canaux de diffusion et de vente pour leurs produits, tant en France qu’à l’étranger.</p>
+                                            <h2 className="mb-10">De l’ameublement à la décoration, notre catalogue répond à toutes vos envies :</h2>
+                                            <p className="mb-25">Avec plus de 500 000 produits référencés au sein de 12 Univers, Decofinder est un site leader et la référence du secteur de la décoration, de l’habitat et du design. Du style classique au style contemporain, des objets rétro aux objets design, notre catalogue est mis à jour régulièrement afin de vous assurer un choix à la hauteur de vos attentes.</p>
+                                            <p>C’est pourquoi, nous mettons tout en place pour vous satisfaire : une large gamme de mobilier avec des bureaux, des lits, des rangements, des tables ou encore des sièges et des canapés, conçus dans des matières et des styles différents, novateurs et design. Vous trouverez également tout pour décorer vos murs, vos plafonds et vos sols : de la peinture intérieure ou extérieure au papier peint en passant par les tableaux décoratifs, les parquets, les tapis et les luminaires, vous trouverez de quoi réaliser l’ambiance parfaite.</p>
+                                            <h2 className="mb-10">Avec Decofinder tout est possible :</h2>
+                                            <p className="mb-25">Grâce à l’une des offres les plus complètes sur le marché de la décoration et de l’ameublement, nous pouvons répondre à la majorité de vos demandes et de vos envies. Fausse poutre, encoignure ou encore chintz, notre équipe met tout en œuvre pour vous satisfaire.</p>
+                                            <p className="mb-25">Vous cherchez un billot de cuisine, un bout de canapé ou bien une entrée de meuble pour vos serrures ? Nous avons les produits qu’il vous faut et surtout un vaste choix de couleurs, de formes et de matières, grâce à nos milliers d’exposants. Vasque de jardin, suspension multiple, table de jeux ou encore porte tasses, nous avons ce que vous cherchez !</p>
+                                    </div>
+                                    <div className="col-lg-6">
+                                            <p className="mb-25">Finalement, de l’intérieur à l’extérieur, de la table à la cuisine et à la salle de bain, du high-tech à la décoration, au linge de maison ou encore au monde de l’enfant, notre équipe reste présente et à l’affût pour vous proposer les meilleurs produits.</p>
+                                            <h2 className="mb-10">Un espace dédié pour les créateurs et les exposants :</h2>
+                                            <p className="mb-25">Fort d’un savoir-faire dans l’univers du commerce en ligne, Decofinder s’est donné comme mission de valoriser les entreprises et les designers en leur offrant une plus large visibilité. Grâce à un descriptif d’entreprise, des fiches techniques détaillées et une mise en avant des sites Internet, toutes les conditions sont réunies pour assurer une notoriété croissante.</p>
+                                            <p className="mb-25">Grâce à notre site internet proposé en 5 langues (francais, anglais, allemand, italien et espagnol) et nos millions de visiteurs annuels, vous serez mis en relation avec de nombreux futurs acheteurs.</p>
+                                            <h2 className="mb-10">Decofinder c'est aussi des idées et des conseils tendances pour votre intérieur et votre extérieur en matière de décoration et d’ameublement :</h2>
+                                            <p className="mb-25">Quelquefois, il peut être compliqué de se projeter et de choisir un produit. C’est pourquoi, nous vous accompagnons également à travers notre Mag, dans la découverte des dernières tendances en matière de décoration, d’ameublement et de design, grâce à de nombreuses sélections. Nous vous présentons aussi les dernières créations élaborées par des designers ainsi que de nombreuses rénovations et créations architecturales, afin que jamais vous ne manquiez d’inspiration.</p>
+                                            <p className="mb-25">Decofinder s’attache également à vous accompagner lors de l’aménagement et de l’optimisation de vos espaces ainsi que dans la réalisation de vos petits travaux, grâce à sa page Conseil. Retrouvez-y des astuces, des tutos et des recommandations pour donner vie à vos projets et pour plus d’inspiration, nous vous proposons des posts quotidiens sur nos réseaux sociaux. Nous restons à votre écoute pour toute question que vous jugeriez utile.</p>
+                                            <p className="mb-25">Bonne visite sur Decofinder.</p>
+                                    </div>
+                                </section>
+                            </div>
                         </div>
-                        <FeatchDeals />
+                    </div>
+                </section>
+                <section className="container mb-50 d-none d-md-block" style={{minWidth:"100%", borderRadius:"0px"}}>
+                    <div className="row about-count">
+                        <div style={{zIndex:100}}>
+                           <RelatedSlider 
+                                inspirations={props.selections}
+                            />
+                            <div style={{display:'flex', flexDirection:'row', flexWrap:"wrap", justifyContent:'center', width:"90%", marginLeft:"5%", marginTop:"50px"}}>
+                                <a  target="_blank" href={"#"} style={{width:'20%', minWidth:"380px", marginLeft:"2.5%", marginRight:"2.5%"}}>
+                                <button style={{width:'100%'}} className="button button-add-to-cart-inspirations">Découvrez toutes les inspirations</button>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </section>
                 <Bottom />
