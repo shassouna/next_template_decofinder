@@ -2,30 +2,28 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import CategoryProduct from "../components/ecommerce/Filter/CategoryProduct";
-import PriceRangeSlider from "../components/ecommerce/Filter/PriceRangeSlider";
-import ShowSelect from "../components/ecommerce/Filter/ShowSelect";
-import SizeFilter from "../components/ecommerce/Filter/SizeFilter";
-import SortSelect from "../components/ecommerce/Filter/SortSelect";
-import VendorFilter from "../components/ecommerce/Filter/VendorFilter";
-import Pagination from "../components/ecommerce/Pagination";
-import QuickView from "../components/ecommerce/QuickView";
-import SingleProduct from "../components/ecommerce/SingleProduct";
-import Breadcrumb2 from "../components/layout/Breadcrumb2";
-import Layout from "../components/layout/Layout";
-import { fetchProduct } from "../redux/action/product";
+import CategoryProduct from "../../components/ecommerce/Filter/CategoryProduct";
+import PriceRangeSlider from "../../components/ecommerce/Filter/PriceRangeSlider";
+import ShowSelect from "../../components/ecommerce/Filter/ShowSelect";
+import SizeFilter from "../../components/ecommerce/Filter/SizeFilter";
+import SortSelect from "../../components/ecommerce/Filter/SortSelect";
+import VendorFilter from "../../components/ecommerce/Filter/VendorFilter";
+import Pagination from "../../components/ecommerce/Pagination";
+import QuickView from "../../components/ecommerce/QuickView";
+import SingleProduct from "../../components/ecommerce/SingleProduct";
+import Breadcrumb2 from "../../components/layout/Breadcrumb2";
+import Layout from "../../components/layout/Layout";
+import { fetchProduct } from "../../redux/action/product";
 
 // Our imports 
 import axios from 'axios'
 
-const Products = ({ products, productFilters, fetchProduct, superunivers_univers_categories, exposant }) => {
-    // console.log(products);
-
+const Products = ({ products, productFilters, fetchProduct, superunivers_univers_categories, exposant, categorie, univers, superunivers, typeprods, produits}) => {
+    console.log(produits)
     let Router = useRouter(),
         searchTerm = Router.query.search,
         showLimit = 12,
         showPagination = 4;
-        console.log(Router)
 
     let [pagination, setPagination] = useState([]);
     let [limit, setLimit] = useState(showLimit);
@@ -72,10 +70,11 @@ const Products = ({ products, productFilters, fetchProduct, superunivers_univers
         setCurrentPage(1);
         setPages(Math.ceil(products.items.length / Number(e.target.value)));
     };
+
     return (
         <>
             <Layout noBreadcrumb="d-none" superunivers_univers_categories={superunivers_univers_categories}>
-            <Breadcrumb2 levels={["1","2","3"]}/>
+            <Breadcrumb2 levels={[superunivers&&superunivers["attributes"]["LIB"],univers&&univers["attributes"]["LIB"],categorie&&categorie["attributes"]["LIB_FR"]]}/>
                 <section className="mt-50 mb-50">
                     <div className="container">
                         <div className="row flex-row-reverse">
@@ -230,10 +229,10 @@ const Products = ({ products, productFilters, fetchProduct, superunivers_univers
                                     </div>
                                 </div>
                                 <div className="row product-grid-3">
-                                    {getPaginatedProducts.length === 0 && (
+                                    {typeprods&&typeprods.length === 0 && (
                                         <h3>No Products Found </h3>
                                     )}
-                                    {superunivers_univers_categories[0]&&superunivers_univers_categories[0].categories_univers[0].categories.map((typeproduit, i) => (
+                                    {typeprods&&typeprods.map((typeproduit, i) => (
                                         <div
                                         className="col-lg-1-5 col-md-4 col-12 col-sm-6"
                                         key={i}
@@ -246,20 +245,23 @@ const Products = ({ products, productFilters, fetchProduct, superunivers_univers
 
                                     ))}
                                 </div>
+                                <div className="row product-grid-3">
+                                    <h6>Découvrez tous les produits de la catégorie {categorie&&categorie["attributes"]["LIB_FR"]} :</h6>
+                                    {produits&&produits.length === 0 && (
+                                        <h3>No Products Found </h3>
+                                    )}
+                                    {produits&&produits.map((produit, i) => (
+                                        <div
+                                        className="col-lg-1-5 col-md-4 col-12 col-sm-6"
+                                        key={i}
+                                        >
+                                            <SingleProduct 
+                                            produit={produit}
+                                            exposant={exposant}
+                                            />
+                                        </div>
 
-                                <div className="pagination-area mt-15 mb-sm-5 mb-lg-0">
-                                    <nav aria-label="Page navigation example">
-                                        <Pagination
-                                            getPaginationGroup={
-                                                getPaginationGroup
-                                            }
-                                            currentPage={currentPage}
-                                            pages={pages}
-                                            next={next}
-                                            prev={prev}
-                                            handleActive={handleActive}
-                                        />
-                                    </nav>
+                                    ))}
                                 </div>
                             </div>
 
@@ -285,6 +287,16 @@ const mapDidpatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDidpatchToProps)(Products);
+
+export async function getStaticPaths() {
+
+    const paths = []
+
+    return {
+        paths:paths,
+        fallback : true
+    }
+}
 
 export async function getStaticProps(context) {
     // SuperUinvers begin
@@ -379,10 +391,80 @@ export async function getStaticProps(context) {
     const resExposant = await axios.get(`http://localhost:1337/api/exposants?${queryExposant}`) 
     // End exposant four products
 
+    // Categories Begin
+        const resCategory = await axios.get(`http://localhost:1337/api/typeprods/${context.params.slug}`) 
+    // Categories End
+
+    // Univers Begin
+       const queryUnivers = qs.stringify(
+        {
+            filters : {           
+                        CLE_RAYON: { $eq: resCategory.data.data["attributes"]["CLE_RAYON"] }              
+                    }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    ) 
+    const resUnivers = await axios.get(`http://localhost:1337/api/rayondetails?${queryUnivers}`) 
+    const resUniversBase = await axios.get(`http://localhost:1337/api/rayonbases?${queryUnivers}`)    
+    // Univers End
+
+    // Superunivers Begin
+    const querySuperunivers = qs.stringify(
+        {
+            filters : {           
+                        CLE_SUPERUNIVERS: { $eq: resUniversBase.data.data[0]["attributes"]["CLE_SUPERUNIVERS"] } ,  
+                        CLE_LANG : { $eq : "0" }           
+                    }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    ) 
+    const resSuperunivers = await axios.get(`http://localhost:1337/api/superuniversdetailss?${querySuperunivers}`) 
+    // Superunivers End
+
+    // Typeprods Begin
+    const queryTypeprods = qs.stringify(
+        {
+            filters : {           
+                CLE_TYPE_PROD_CATEGORIE: { $eq: resCategory.data.data["attributes"]["CLE_TYPE_PROD"] } ,           
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    )
+    const resTypeprods = await axios.get(`http://localhost:1337/api/typeprods?${queryTypeprods}`) 
+    // Typeprods End
+
+    // Produits Begin
+    const keys_typeprods = []
+    resTypeprods.data.data.forEach(element => {
+        keys_typeprods.push(element["attributes"]["CLE_TYPE_PROD"])
+    })
+    const queryProds = qs.stringify(
+        {
+            filters : {           
+                CLE_TYPE_PROD: { $in : keys_typeprods } ,           
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    )
+    const resProds = await axios.get(`http://localhost:1337/api/produits?${queryProds}`) 
+    // Produits End
     return {
         props: {
             superunivers_univers_categories : superunivers_univers,
-            exposant: resExposant.data.data[0]
+            exposant : resExposant.data.data[0],
+            categorie : resCategory.data.data,
+            univers : resUnivers.data.data[0],
+            typeprods : resTypeprods.data.data,
+            superunivers : resSuperunivers.data.data[0],
+            produits : resProds.data.data
         }, 
       }
 }

@@ -12,7 +12,7 @@ const Header = ({
     totalWishlistItems,
     superunivers_univers_categories
 }) => {
-    console.log("superunivers_univers_categories :"  + superunivers_univers_categories)
+
     const [isToggled, setToggled] = useState(false);
     const [scroll, setScroll] = useState(0);
 
@@ -28,26 +28,22 @@ const Header = ({
     const handleToggle = () => setToggled(!isToggled);
 
     return (
+        superunivers_univers_categories&&
         <>
             <header className="header-area header-style-1 header-height-2">
-                <div className="mobile-promotion">
-                    <span>
-                        Grand opening, <strong>up to 15%</strong> off all items.
-                        Only <strong>3 days</strong> left
-                    </span>
+                <div 
+                style={{height:"120px", backgroundColor:"#fcfcfc", display:"flex", justifyContent:"center", alignItems:"center"}}>
+                  <img src="/assets/imgs/jpg.jpg"/>
                 </div>
-                <div className="header-top header-top-ptb-1 d-none d-lg-block"
-                style={{height:"120px", backgroundColor:"#fcfcfc"}}>
-                  
-                </div>
-                <div className="header-middle header-middle-ptb-1 d-none d-lg-block">
+                <div className="header-middle header-middle-ptb-1 d-none d-lg-block"
+                style={{ marginLeft:"15%", marginRight:"15%"}}>
                     <div className="container">
                         <div className="header-wrap">
                             <div className="logo logo-width-1">
                                 <Link href="/">
                                     <a>
                                         <img
-                                            src="/assets/imgs/theme/logo.svg"
+                                            src="/assets/imgs/logoDF.jpg"
                                             alt="logo"
                                         />
                                     </a>
@@ -112,7 +108,7 @@ const Header = ({
                                 <Link href="/">
                                     <a>
                                         <img
-                                            src="/assets/imgs/theme/logo.svg"
+                                            src="/assets/imgs/logoDF.jpg"
                                             alt="logo"
                                         />
                                     </a>
@@ -120,57 +116,7 @@ const Header = ({
                             </div>
                             <div className="header-nav d-none d-lg-flex">
                                 <div className="main-categori-wrap d-none d-lg-block">
-                                        <div
-                                            className="more_slide_open"
-                                            style={{ display: "none" }}
-                                        >
-                                            <div className="d-flex categori-dropdown-inner">
-                                                <ul>
-                                                    <li>
-                                                        <Link href="/products"><a>
-                                                            {" "}
-                                                            <img
-                                                                src="/assets/imgs/theme/icons/icon-1.svg"
-                                                                alt=""
-                                                            />
-                                                            Milks and Dairies
-                                                        </a></Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link href="/products"><a>
-                                                            {" "}
-                                                            <img
-                                                                src="/assets/imgs/theme/icons/icon-2.svg"
-                                                                alt=""
-                                                            />
-                                                            Clothing & beauty
-                                                        </a></Link>
-                                                    </li>
-                                                </ul>
-                                                <ul className="end">
-                                                    <li>
-                                                        <Link href="/products"><a>
-                                                            {" "}
-                                                            <img
-                                                                src="/assets/imgs/theme/icons/icon-3.svg"
-                                                                alt=""
-                                                            />
-                                                            Wines & Drinks
-                                                        </a></Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link href="/products"><a>
-                                                            {" "}
-                                                            <img
-                                                                src="/assets/imgs/theme/icons/icon-4.svg"
-                                                                alt=""
-                                                            />
-                                                            Fresh Seafood
-                                                        </a></Link>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
+
                                 </div>
                                 <div className="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block  font-heading">
                                     <nav>
@@ -205,38 +151,6 @@ const Header = ({
                                                             </li>
                                                         ))
                                                         }
-
-                                                            <li>
-                                                                <a href="#">
-                                                                    Fresh
-                                                                    Vegetables
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    Herbs &
-                                                                    Seasonings
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    Cuts &
-                                                                    Sprouts
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    Exotic
-                                                                    Fruits &
-                                                                    Veggies
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    Packaged
-                                                                    Produce
-                                                                </a>
-                                                            </li>
                                                         </ul>
                                                     </li>
                                                 ))
@@ -253,132 +167,6 @@ const Header = ({
 
                             <div className="header-action-right d-block d-lg-none">
                                 <div className="header-action-2">
-                                    <div className="header-action-icon-2">
-                                        <Link href="/shop-wishlist">
-                                            <a>
-                                                <img
-                                                    alt="Evara"
-                                                    src="/assets/imgs/theme/icons/icon-compare.svg"
-                                                />
-                                                <span className="pro-count white">
-                                                    {totalCompareItems}
-                                                </span>
-                                            </a>
-                                        </Link>
-                                    </div>
-                                    <div className="header-action-icon-2">
-                                        <Link href="/shop-wishlist">
-                                            <a>
-                                                <img
-                                                    alt="Evara"
-                                                    src="/assets/imgs/theme/icons/icon-heart.svg"
-                                                />
-                                                <span className="pro-count white">
-                                                    {totalWishlistItems}
-                                                </span>
-                                            </a>
-                                        </Link>
-                                    </div>
-                                    <div className="header-action-icon-2">
-                                        <Link href="/shop-cart">
-                                            <a className="mini-cart-icon">
-                                                <img
-                                                    alt="Evara"
-                                                    src="/assets/imgs/theme/icons/icon-cart.svg"
-                                                />
-                                                <span className="pro-count white">
-                                                    {totalCartItems}
-                                                </span>
-                                            </a>
-                                        </Link>
-                                        <div className="cart-dropdown-wrap cart-dropdown-hm2">
-                                            <ul>
-                                                <li>
-                                                    <div className="shopping-cart-img">
-                                                        <Link href="/shop-grid-right">
-                                                            <a>
-                                                                <img
-                                                                    alt="Evara"
-                                                                    src="/assets/imgs/shop/thumbnail-3.jpg"
-                                                                />
-                                                            </a>
-                                                        </Link>
-                                                    </div>
-                                                    <div className="shopping-cart-title">
-                                                        <h4>
-                                                            <Link href="/shop-grid-right">
-                                                                <a>
-                                                                    Plain
-                                                                    Striola
-                                                                    Shirts
-                                                                </a>
-                                                            </Link>
-                                                        </h4>
-                                                        <h3>
-                                                            <span>1 × </span>
-                                                            $800.00
-                                                        </h3>
-                                                    </div>
-                                                    <div className="shopping-cart-delete">
-                                                        <Link href="/#">
-                                                            <a>
-                                                                <i className="fi-rs-cross-small"></i>
-                                                            </a>
-                                                        </Link>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="shopping-cart-img">
-                                                        <Link href="/shop-grid-right">
-                                                            <a>
-                                                                <img
-                                                                    alt="Evara"
-                                                                    src="/assets/imgs/shop/thumbnail-4.jpg"
-                                                                />
-                                                            </a>
-                                                        </Link>
-                                                    </div>
-                                                    <div className="shopping-cart-title">
-                                                        <h4>
-                                                            <Link href="/shop-grid-right">
-                                                                <a>
-                                                                    Macbook Pro
-                                                                    2022
-                                                                </a>
-                                                            </Link>
-                                                        </h4>
-                                                        <h3>
-                                                            <span>1 × </span>
-                                                            $3500.00
-                                                        </h3>
-                                                    </div>
-                                                    <div className="shopping-cart-delete">
-                                                        <Link href="/#">
-                                                            <a>
-                                                                <i className="fi-rs-cross-small"></i>
-                                                            </a>
-                                                        </Link>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <div className="shopping-cart-footer">
-                                                <div className="shopping-cart-total">
-                                                    <h4>
-                                                        Total
-                                                        <span>$383.00</span>
-                                                    </h4>
-                                                </div>
-                                                <div className="shopping-cart-button">
-                                                    <Link href="/shop-cart">
-                                                        <a>View cart</a>
-                                                    </Link>
-                                                    <Link href="/shop-checkout">
-                                                        <a>Checkout</a>
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="header-action-icon-2 d-block d-lg-none">
                                         <div
                                             className="burger-icon burger-icon-white"

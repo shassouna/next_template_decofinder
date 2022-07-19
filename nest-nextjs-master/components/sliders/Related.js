@@ -49,6 +49,16 @@ const RelatedSlider = (props) => {
                         />
                     </SwiperSlide>
                 ))}
+                {props.nouveautes&&props.nouveautes.map((nouveaute, i) => (
+                    <SwiperSlide key={i}>
+                        <SingleProduct 
+                        nouveaute={nouveaute}
+                        />
+                    </SwiperSlide>
+                ))}
+                {/*                     <div
+                        className="col-lg-1-5 col-md-4 col-12 col-sm-6"
+                    >*/}
             </Swiper>
 
             <div

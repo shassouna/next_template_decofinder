@@ -9,29 +9,35 @@ import Deals1 from "./../components/elements/Deals1";
 import IntroPopup from "./../components/elements/IntroPopup";
 import Layout from "./../components/layout/Layout";
 import CategorySlider from "./../components/sliders/Category";
-import Intro1 from "./../components/sliders/Intro1";
+import Intro1 from "./../components/sliders/intro4.js";
 import Link from "next/link";
 
 // Our imports
 import axios from 'axios';
 import RelatedSlider from "./../components/sliders/Related";
+import FeaturedTab from './../components/elements/FeaturedTab';
 
 
 export default function Home(props) {
-    console.log(props.selections)
+    console.log(props.nouveautes)
     return (
         <>
 
 
             <Layout superunivers_univers_categories={props.superunivers_univers_categories} noBreadcrumb="d-none">
-
+                <section className="home-slider position-relative mb-30">
+                    <div className="container">
+                        <div className="home-slide-cover mt-30">
+                            <Intro1 />
+                        </div>
+                    </div>
+                </section>
                 <section className="section-padding pb-5">
-                    <div className="col-12" style={{width:"90%", marginLeft:"5%"}}>
-                         <div className="row related-products position-relative" >
-                            <RelatedSlider 
+                <div className="product-grid-5 row"
+                style={{width:"90%", marginLeft:"5%"}}>
+                            <FeaturedTab 
                            selections={props.selections}
                             />
-                        </div>
                     </div>
                 </section>
                 <section style={{marginTop:"55px"}}>
@@ -97,17 +103,23 @@ export default function Home(props) {
                 </section>
                 <section className="container mb-50 d-none d-md-block" style={{minWidth:"100%", borderRadius:"0px"}}>
                     <div className="row about-count">
-                        <div style={{zIndex:100}}>
-                           <RelatedSlider 
+                        <div  className="product-grid-4 row" style={{zIndex:100}}>
+                           <FeaturedTab 
                                 inspirations={props.selections}
-                            />
-                            <div style={{display:'flex', flexDirection:'row', flexWrap:"wrap", justifyContent:'center', width:"90%", marginLeft:"5%", marginTop:"50px"}}>
-                                <a  target="_blank" href={"#"} style={{width:'20%', minWidth:"380px", marginLeft:"2.5%", marginRight:"2.5%"}}>
-                                <button style={{width:'100%'}} className="button button-add-to-cart-inspirations">Découvrez toutes les inspirations</button>
-                                </a>
-                            </div>
+                            />                       
+                        </div>
+                        <div style={{display:'flex', flexDirection:'row', flexWrap:"wrap", justifyContent:'center', width:"90%", marginLeft:"5%", marginTop:"50px"}}>
+                            <a  target="_blank" href={"#"} style={{width:'20%', minWidth:"380px", marginLeft:"2.5%", marginRight:"2.5%"}}>
+                            <button style={{width:'100%'}} className="button button-add-to-cart-inspirations">Découvrez toutes les inspirations</button>
+                            </a>
                         </div>
                     </div>
+                </section>
+                <section>
+                    <div className="product-grid-4 row">
+                    <FeaturedTab nouveautes={props.selections} />
+                    </div>
+                    {/* <SingleProductList product={item}/> */}
                 </section>
                 <Bottom />
                 <QuickView />
@@ -246,11 +258,55 @@ export async function getStaticProps(context) {
     }
     // End four products
 
+    // Begin Nouveautes
+    /*const queryNouveautes = qs.stringify(
+        {
+            filters: {
+                NOUVEAUTE : { $eq: "1" } 
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+        )
+        const resNouveautes = await axios.get(`http://localhost:1337/api/produits?${queryNouveautes}`) 
+        const nouveautes = []
+        for (let produit of resNouveautes.data.data) {
+            const query = qs.stringify (
+                {
+                    filters: {
+                        CLE_EXPOSANT: { $eq: produit['attributes']['CLE_EXPOSANT'] } 
+                    }
+                },
+                {
+                    encodeValuesOnly: true,
+                }
+            )   
+            const res = await axios.get(`http://localhost:1337/api/exposants?${query}`) 
+    
+            const query2 = qs.stringify (
+                {
+                    filters: {
+                        CLE_TYPE_PROD: { $eq: produit['attributes']['CLE_TYPE_PROD'] } 
+                    }
+                },
+                {
+                    encodeValuesOnly: true,
+                }
+            )  
+            const res2 = await axios.get(`http://localhost:1337/api/typeprods?${query2}`) 
+
+            nouveautes.push({produit : produit, typeprod : res2.data.data[0], exposant : res.data.data[0]})
+        }
+        */
+    // End Nouveautes 
+
     return {
         props: {
             superunivers_univers_categories : superunivers_univers,
             fourproducts : resFourProducts.data.data,
-            selections : selections
+            selections : selections,
+           // nouveautes : nouveautes
         }, 
       }
 }

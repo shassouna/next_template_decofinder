@@ -27,6 +27,7 @@ const SingleProduct = ({
     selection,
     typeproduit,
     inspiration,
+    nouveaute,
     addToCart,
     addToCompare,
     addToWishlist,
@@ -186,6 +187,28 @@ const SingleProduct = ({
                                 </a>
                             </Link>
                         </div>
+                        <div className="product-badges product-badges-position product-badges-mrg">
+                        {selection.produit["attributes"]["coupdecoeur"] && 
+                        <>
+                        <span className="hot">Coup de Coeur</span>
+                        </>
+                        }
+                        {selection.produit["attributes"]["selection"] && 
+                        <>
+                        <span className="new">Sélection du jury</span>
+                        </>
+                        }
+                        {selection.produit["attributes"]["achatenligne"] && 
+                        <>
+                        <span className="best">Achat en ligne</span>
+                        </>
+                        }
+                        {selection.produit["attributes"]["asaisir"] && 
+                        <>
+                        <span className="sale">A saisir</span>
+                        </>
+                        }
+                    </div>
                     </div>
                     <div className="product-content-wrap">
                     <h2 >
@@ -251,9 +274,54 @@ const SingleProduct = ({
                     </div>
                 </div>
         }
+
+{   // case nouveautes
+            nouveaute && 
+                <div className="product-cart-wrap mb-30" onMouseOver={handleShowDescription} onMouseLeave={handleHideDescription}
+                >
+                    <div className="product-img-action-wrap">
+                        <div className="product-img product-img-zoom">
+                            <Link
+                                href="/products/[slug]"
+                                as={`/products/${"product.slug"}`}
+                            >
+                                <a>
+                                    <img
+                                        className="default-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                    <img
+                                        className="hover-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                </a>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="product-content-wrap">
+                    <div className="product-category" style={{display:"flex", justifyContent:"center", marginTop:"10px"}}>
+                        <Link
+                            href="/products/[slug]"
+                            as={`/products/${"product.slug"}`}
+                        >
+                            <a>Inspiration</a>
+                        </Link>
+                    </div>
+                    <h2 style={{display:"flex", justifyContent:"center"}}>
+                            <Link href="/products">
+                                <a style={{color:"#000000"}}>{nouveaute.exposant['attributes']['NOM'].toUpperCase()}</a>
+                            </Link>
+                    </h2>
+                    </div>
+                </div>    
+        }
         </>
     );
 };
+
+
 
 const mapDispatchToProps = {
     addToCart,
