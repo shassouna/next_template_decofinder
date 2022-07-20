@@ -79,7 +79,64 @@ const Products = ({ products, productFilters, fetchProduct, superunivers_univers
                 <section className="mt-50 mb-50">
                     <div className="container">
                         <div className="row flex-row-reverse">
-                        <div className="col-lg-1-5 primary-sidebar sticky-sidebar">
+                            <div className="col-lg-4-5">
+                                <div className="shop-product-fillter">
+                                    <div className="totall-product">
+                                        <p>
+                                            
+                                            We found
+                                            <strong className="text-brand">
+                                                {products.items.length}
+                                            </strong>
+                                            items for you!
+                                        </p>
+                                    </div>
+                                    <div className="sort-by-product-area">
+                                        <div className="sort-by-cover mr-10">
+                                            <ShowSelect
+                                                selectChange={selectChange}
+                                                showLimit={showLimit}
+                                            />
+                                        </div>
+                                        <div className="sort-by-cover">
+                                            <SortSelect />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row product-grid-3">
+                                    {getPaginatedProducts.length === 0 && (
+                                        <h3>No Products Found </h3>
+                                    )}
+                                    {superunivers_univers_categories[0]&&superunivers_univers_categories[0].categories_univers[0].categories.map((typeproduit, i) => (
+                                        <div
+                                        className="col-lg-1-5 col-md-4 col-12 col-sm-6"
+                                        key={i}
+                                        >
+                                            <SingleProduct 
+                                            typeproduit={typeproduit}
+                                            exposant={exposant}
+                                            />
+                                        </div>
+
+                                    ))}
+                                </div>
+
+                                <div className="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                                    <nav aria-label="Page navigation example">
+                                        <Pagination
+                                            getPaginationGroup={
+                                                getPaginationGroup
+                                            }
+                                            currentPage={currentPage}
+                                            pages={pages}
+                                            next={next}
+                                            prev={prev}
+                                            handleActive={handleActive}
+                                        />
+                                    </nav>
+                                </div>
+                            </div>
+                            <div className="col-lg-1-5 primary-sidebar sticky-sidebar">
                                 <div className="sidebar-widget widget-category-2 mb-30">
                                 <h5 className="section-title style-1 mb-30">
                                         Category
@@ -205,64 +262,6 @@ const Products = ({ products, productFilters, fetchProduct, superunivers_univers
                                 </div>
                             </div>
                             </div>
-                            <div className="col-lg-4-5">
-                                <div className="shop-product-fillter">
-                                    <div className="totall-product">
-                                        <p>
-                                            
-                                            We found
-                                            <strong className="text-brand">
-                                                {products.items.length}
-                                            </strong>
-                                            items for you!
-                                        </p>
-                                    </div>
-                                    <div className="sort-by-product-area">
-                                        <div className="sort-by-cover mr-10">
-                                            <ShowSelect
-                                                selectChange={selectChange}
-                                                showLimit={showLimit}
-                                            />
-                                        </div>
-                                        <div className="sort-by-cover">
-                                            <SortSelect />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row product-grid-3">
-                                    {getPaginatedProducts.length === 0 && (
-                                        <h3>No Products Found </h3>
-                                    )}
-                                    {superunivers_univers_categories[0]&&superunivers_univers_categories[0].categories_univers[0].categories.map((typeproduit, i) => (
-                                        <div
-                                        className="col-lg-1-5 col-md-4 col-12 col-sm-6"
-                                        key={i}
-                                        >
-                                            <SingleProduct 
-                                            typeproduit={typeproduit}
-                                            exposant={exposant}
-                                            />
-                                        </div>
-
-                                    ))}
-                                </div>
-
-                                <div className="pagination-area mt-15 mb-sm-5 mb-lg-0">
-                                    <nav aria-label="Page navigation example">
-                                        <Pagination
-                                            getPaginationGroup={
-                                                getPaginationGroup
-                                            }
-                                            currentPage={currentPage}
-                                            pages={pages}
-                                            next={next}
-                                            prev={prev}
-                                            handleActive={handleActive}
-                                        />
-                                    </nav>
-                                </div>
-                            </div>
-
                             
                         </div>
                     </div>

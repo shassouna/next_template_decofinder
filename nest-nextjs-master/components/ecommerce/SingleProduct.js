@@ -34,8 +34,6 @@ const SingleProduct = ({
     openQuickView,
 }) => {
 
-    console.log(selection)
-
     const handleCart = (product) => {
         addToCart(product);
         toast("Product added to Cart !");

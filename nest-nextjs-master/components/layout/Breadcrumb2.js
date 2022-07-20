@@ -22,9 +22,6 @@ const Breadcrumb2 = ({levels}) => {
                                 )}
                             </div>
                         </div>
-                        <div className="col-xl-9 text-end d-none d-xl-block">
-                            <Tags/>                            
-                        </div>
                     </div>
                 </div>
             </div>

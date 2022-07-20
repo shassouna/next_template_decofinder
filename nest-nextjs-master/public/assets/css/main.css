@@ -8571,11 +8571,11 @@ span.fi-rs-apps {
 
 .primary-sidebar .sidebar-widget {
   position: relative;
-  padding: 30px;
+  padding: 20px;
   border: 1px solid #ececec;
   border-radius: 15px;
-  -webkit-box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
-          box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 3px 3px 9px rgba(0, 0, 0, 0.05);
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.05);
 }
 
 .widget-category-2 ul li {
@@ -11844,4 +11844,10 @@ footer .hotline img {
   color:GRAY;
   background-color: #FFFFFF;
   border-radius:2px;
+}
+.scroll {
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+  height: 320px;
 }
