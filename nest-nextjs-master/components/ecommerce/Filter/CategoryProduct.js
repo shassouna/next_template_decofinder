@@ -6,7 +6,7 @@ import { updateProductCategory } from "../../../redux/action/productFiltersActio
 import Link from "next/link"
 import {useEffect, useState} from "react"
 
-const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, autres_exposants, produits_prix, produits_designers, produits_styles, produits_couleurs }) => {
+const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, autres_exposants, produits_prix, produits_designers, produits_styles, produits_couleurs, produits_materiaux }) => {
     const router = useRouter();
 
     const selectCategory = (e, category) => {
@@ -23,6 +23,7 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
 
     const [produitsPrix, setProduitPrix] = useState ([])
     const [produitsDesigners, setProduitsDesigners] = useState([])
+    const [produitsMateriaux, setProduitsMateriaux] = useState([])
 
     useEffect(()=>{
         if(produits_prix){
@@ -40,6 +41,9 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
             })
             setProduitPrix ([...res])
         }
+    },[produits_prix])
+
+    useEffect(()=>{
         const res2 = []
         if(produits_designers){
             produits_designers.forEach(e=>{
@@ -49,7 +53,20 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
             })
             setProduitsDesigners([...res2])
         }
-    },[])
+    },[produits_designers])
+
+    useEffect(()=>{
+        const res3 = []
+        if(produits_materiaux){
+            produits_materiaux.forEach(e=>{
+                if(!res3.find(element=>element["attributes"]["LIB_FR"]==e["attributes"]["LIB_FR"])){
+                    res3.push(e)
+                }
+            })
+            setProduitsMateriaux([...res3])
+        }
+    },[produits_materiaux])
+
     return (
         <>
             <ul>
@@ -127,7 +144,16 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
                 </a>    
                 </li>              
             ))
-            }    
+            }  
+            {
+            produitsMateriaux&&produitsMateriaux.map(val=>(
+                <li>
+                <a>
+                {val['attributes']['LIB_FR']}
+                </a>    
+                </li>              
+            ))
+            }   
             </ul>
         </>
     );

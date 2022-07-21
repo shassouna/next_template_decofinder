@@ -3,18 +3,17 @@ import { useRouter } from 'next/router'
 import Link from "next/link"
 import Tags from "../ecommerce/Filter/Tags";
 
-const Breadcrumb2 = ({levels}) => {
+const Breadcrumb2 = ({levels, title}) => {
     const router = useRouter()
 
     const titlex = router.query.cat
     return (
-        <>
             <div className="page-header mt-30 mb-50">
             <div className="container">
                 <div className="archive-header">
                     <div className="row align-items-center">
                         <div className="col-xl-3">
-                            <h1 className="mb-15 text-capitalize">{titlex ? titlex : "Categorie"}</h1>
+                            <h1 className="mb-15 text-capitalize">{titlex ? titlex : title}</h1>
                             <div className="breadcrumb">
                                 {levels.map((val,index)=>{
                                     return index == levels.length-1 ? <>{val}  </> : <>{val} <span></span> {titlex}</>
@@ -26,7 +25,6 @@ const Breadcrumb2 = ({levels}) => {
                 </div>
             </div>
         </div>
-        </>
     );
 };
 

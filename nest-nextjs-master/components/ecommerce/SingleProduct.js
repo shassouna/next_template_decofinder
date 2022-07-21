@@ -102,7 +102,7 @@ const SingleProduct = ({
                         {showProductDescription &&
                             <div style={{visibilty:"hidden"}}>
                                 <span className="font-small text-muted">
-                                    {cleanHTML(produit['attributes']['DESC_FR']).split(" ").slice(0,12).join(" ")+" ...."}
+                                    {cleanHTML(produit['attributes']['DESC_FR']).length>1&&cleanHTML(produit['attributes']['DESC_FR']).split(" ").slice(0,12).join(" ")+" ...."}
                                 </span>
                             </div>
                         }

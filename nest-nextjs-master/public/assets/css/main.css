@@ -7546,7 +7546,7 @@ h6.post-title {
 }
 
 .mobile-social-icon a img {
-  max-width: 16px;
+  max-width: 26px;
 }
 
 .mobile-social-icon a img:hover {
@@ -11732,7 +11732,7 @@ footer .hotline img {
   width: 35%;
   display: flex;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 0px;
   justify-content: space-between;
 }
 .mobile-social-icon-item {
@@ -11845,9 +11845,22 @@ footer .hotline img {
   background-color: #FFFFFF;
   border-radius:2px;
 }
+.button.button-add-to-cart-mag {
+  padding: 8px 40px;
+  margin-top: 25%;
+  border: 1px solid #343A40;
+  border-radius:2px;
+  background-color: #FFFFFF;
+  color:gray;
+}
+.button.button-add-to-cart-mag:hover {
+  color:rgba(255, 255, 255, 1);
+  background-color:gray;
+  border-radius:2px;
+}
 .scroll {
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;
   scrollbar-width: thin;
-  height: 320px;
+  max-height: 320px;
 }
