@@ -4,9 +4,18 @@ import { updateProductCategory } from "../../../redux/action/productFiltersActio
 
 // My imports
 import Link from "next/link"
-import {useEffect, useState} from "react"
 
-const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, autres_exposants, produits_prix, produits_designers, produits_styles, produits_couleurs, produits_materiaux }) => {
+const CategoryProduct = ({ 
+    updateProductCategory, 
+    autres_categories, 
+    typeprods, 
+    autres_exposants, 
+    produits_prix, 
+    produits_designers, 
+    produits_styles, 
+    produits_couleurs, 
+    produits_materiaux,
+    autres_univers }) => {
     const router = useRouter();
 
     const selectCategory = (e, category) => {
@@ -20,52 +29,6 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
             },
         });
     };
-
-    const [produitsPrix, setProduitPrix] = useState ([])
-    const [produitsDesigners, setProduitsDesigners] = useState([])
-    const [produitsMateriaux, setProduitsMateriaux] = useState([])
-
-    useEffect(()=>{
-        if(produits_prix){
-            let tab = ([...produits_prix].map(produit => produit["attributes"]['TARIF_PUB']) )
-            let res = []
-            tab.forEach(element => {
-                if(element!="NULL"){
-                    let f = res.find(e=>e.prix==element)
-                    if(f){
-                        f.count=f.count+1
-                    }else {
-                        res.push({prix:element, count:1})
-                    }   
-                }
-            })
-            setProduitPrix ([...res])
-        }
-    },[produits_prix])
-
-    useEffect(()=>{
-        const res2 = []
-        if(produits_designers){
-            produits_designers.forEach(e=>{
-                if(!res2.find(element=>element["attributes"]["DESIGNER"]==e["attributes"]["DESIGNER"])){
-                    res2.push(e)
-                }
-            })
-            setProduitsDesigners([...res2])
-        }
-    },[produits_designers])
-
-    useEffect(()=>{
-        const res3 = []
-        if(produits_materiaux){
-            produits_materiaux.forEach(e=>{
-                if(!res3.find(element=>element["attributes"]["LIB_FR"]==e["attributes"]["LIB_FR"])){
-                    res3.push(e)
-                }
-            })
-            setProduitsMateriaux([...res3])
-        }
-    },[produits_materiaux])
 
     return (
         <>
@@ -106,7 +69,7 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
             ))
             }    
             {
-            produitsPrix&&produitsPrix.map(val=>(
+            produits_prix&&produits_prix.map(val=>(
                 <li>
                     <a>
                         {val.prix}
@@ -116,7 +79,7 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
             ))
             } 
             {
-            produitsDesigners&&produitsDesigners.map(val=>(
+            produits_designers&&produits_designers.map(val=>(
                 val['attributes']['DESIGNER']!= "NULL" && val['attributes']['DESIGNER'].length>1&&
                 <li>
                 <a>
@@ -146,14 +109,27 @@ const CategoryProduct = ({ updateProductCategory, autres_categories, typeprods, 
             ))
             }  
             {
-            produitsMateriaux&&produitsMateriaux.map(val=>(
+            produits_materiaux&&produits_materiaux.map(val=>(
+                val['attributes']['LIB_FR']!= "NULL" && val['attributes']['LIB_FR'].length>1&&
                 <li>
                 <a>
                 {val['attributes']['LIB_FR']}
                 </a>    
-                </li>              
+                </li>             
             ))
             }   
+            {
+            autres_univers&&autres_univers.map(val=>(
+                <li>
+                    <Link href={`http://localhost:3000/univers/${val['attributes']['slug']}`}>
+                    <a>
+                        {val["attributes"]["LIB"]}
+                    </a>    
+                    </Link>
+                    <span className="count">{/*30*/}</span>
+                </li>                
+            ))
+            } 
             </ul>
         </>
     );

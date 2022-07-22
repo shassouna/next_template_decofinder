@@ -5,7 +5,7 @@ import useClickOutside from "../../util/outsideClick";
 
 const MobileMenu = ({ isToggled, toggleClick, superunivers_univers_categories }) => {
 
-    console.log("superunivers_univers_categories : "+superunivers_univers_categories)
+    
     const [isActive, setIsActive] = useState({
         status: false,
         key: "",

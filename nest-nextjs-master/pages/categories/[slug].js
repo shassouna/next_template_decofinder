@@ -33,7 +33,8 @@ const Products = ({ products,
     styles,
     couleurs,
     materiaux,
-    prods_exposants
+    prods_exposants,
+    prix
 }) => {
     console.log(produits)
 
@@ -66,7 +67,7 @@ const Products = ({ products,
                                 <h5 className="section-title style-1 mb-30">
                                         Prix
                                     </h5>
-                                    <div className="scroll"><CategoryProduct produits_prix={produits}/></div>
+                                    <div className="scroll"><CategoryProduct produits_prix={prix}/></div>
                                 </div>
                                 <div className="sidebar-widget widget-category-2 mb-30">
                                 <h5 className="section-title style-1 mb-30">
@@ -378,6 +379,12 @@ export async function getStaticProps(context) {
         }
     )
     const resStyles = await axios.get(`http://localhost:1337/api/styles?${queryStyles}`)    
+    const styles = []
+    resStyles.data.data.forEach(e=>{
+        if(!styles.find(element=>element["attributes"]["CLE_STYLE"]==e["attributes"]["CLE_STYLE"])){
+            styles.push(e)
+        }
+    })
     // Styles End
 
     // Couleurs Begin
@@ -394,6 +401,12 @@ export async function getStaticProps(context) {
         }
     )
     const resCouleurs = await axios.get(`http://localhost:1337/api/couleurs?${queryCouleurs}`)    
+    const couleurs = []
+    resCouleurs.data.data.forEach(e=>{
+        if(!couleurs.find(element=>element["attributes"]["CLE_COULEUR"]==e["attributes"]["CLE_COULEUR"])){
+            couleurs.push(e)
+        }
+    })
     // Couleurs End
 
     // Materiaux Begin
@@ -412,7 +425,32 @@ export async function getStaticProps(context) {
         }
     )
     const resMateriaux = await axios.get(`http://localhost:1337/api/materiaus?${queryMateriaux}`)    
+    const materiaux = []
+    resMateriaux.data.data.forEach(e=>{
+        if(!materiaux.find(element=>element["attributes"]["CLE_MATERIAU"]==e["attributes"]["CLE_MATERIAU"])){
+            materiaux.push(e)
+        }
+    })
     // Materiaux End
+
+    // Prix Produits Begin
+    let tabPrix = ([...resProds.data.data].map(produit => produit["attributes"]['TARIF_PUB']) )
+    let resPrix = []
+    tabPrix.forEach(element => {
+        if(element!="NULL"){
+            let f = resPrix.find(e=>e.prix==element)
+            if(f){
+                f.count=f.count+1
+            }else {
+                resPrix.push({prix:element, count:1})
+            }   
+        }
+    })
+    // Prix Produits End 
+
+    // Marques of univers Begin
+    const marques = prods_exposants.map(e=>e.exposant)  
+    // Marques of univers End
 
     return {
         props: {
@@ -424,10 +462,12 @@ export async function getStaticProps(context) {
             produits : resProds.data.data.slice(0,20),
             prods_exposants : prods_exposants.slice(0,20),
             autres_categories : f2["categories"],
-            autres_exposants : resMarques.data.data,
+            autres_exposants : marques,
             styles : resStyles.data.data,
-            couleurs : resCouleurs.data.data,
-            materiaux : resMateriaux.data.data
+            couleurs : couleurs,
+            materiaux : materiaux,
+            prix : resPrix,
+
         }, 
       }
 }

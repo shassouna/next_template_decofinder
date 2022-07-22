@@ -1,29 +1,17 @@
-import CategoryTab from "../components/ecommerce/categoryTab";
-import FeatchDeals from "../components/ecommerce/fetchDeals";
-import FeatchTab from "../components/ecommerce/fetchTab";
-import FetchTabSlider from "../components/ecommerce/fetchTabSlider";
-import Bottom from "../components/elements/Bottom";
 import QuickView from "./../components/ecommerce/QuickView";
-import Banner5 from "./../components/elements/Banner5";
-import Deals1 from "./../components/elements/Deals1";
-import IntroPopup from "./../components/elements/IntroPopup";
 import Layout from "./../components/layout/Layout";
 import CategorySlider from "./../components/sliders/Category";
 import Intro1 from "./../components/sliders/intro4.js";
-import Link from "next/link";
 
 // Our imports
 import axios from 'axios';
-import RelatedSlider from "./../components/sliders/Related";
 import FeaturedTab from './../components/elements/FeaturedTab';
 
 
 export default function Home(props) {
-    console.log(props.nouveautes)
+
     return (
         <>
-
-
             <Layout superunivers_univers_categories={props.superunivers_univers_categories} noBreadcrumb="d-none">
                 <section className="home-slider position-relative mb-30">
                     <div className="container">
@@ -121,7 +109,7 @@ export default function Home(props) {
                     </div>
                     {/* <SingleProductList product={item}/> */}
                 </section>
-                <Bottom />
+  
                 <QuickView />
             </Layout>
         </>

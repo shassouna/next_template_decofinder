@@ -15,9 +15,13 @@ const Slug = ({
     autres_typeProds,
     autres_exposants,
     produits,
-    prods_exposants
+    prods_exposants,
+    produits_prix,
+    designers,
+    styles,
+    couleurs,
+    materiaux
 }) => {
-    console.log(produits)
     return (
         <Layout noBreadcrumb="d-none" superunivers_univers_categories={superunivers_univers_categories}>
             <Breadcrumb2 title="Type produit" levels={[superunivers&&superunivers["attributes"]["LIB"],univers&&univers["attributes"]["LIB"],categorie&&categorie["attributes"]["LIB_FR"], typeProd&&typeProd["attributes"]["LIB_FR"]]}/>
@@ -41,7 +45,31 @@ const Slug = ({
                                 <h5 className="section-title style-1 mb-30">
                                         Prix
                                     </h5>
-                                    <div className="scroll"><CategoryProduct produits_prix={produits}/></div>
+                                    <div className="scroll"><CategoryProduct produits_prix={produits_prix}/></div>
+                                </div>
+                                <div className="sidebar-widget widget-category-2 mb-30">
+                                <h5 className="section-title style-1 mb-30">
+                                        Designer
+                                    </h5>
+                                    <div className="scroll"><CategoryProduct produits_designers={designers}/></div>
+                                </div>
+                                <div className="sidebar-widget widget-category-2 mb-30">
+                                <h5 className="section-title style-1 mb-30">
+                                        Style
+                                    </h5>
+                                    <div className="scroll"><CategoryProduct produits_styles={styles}/></div>
+                                </div>
+                                <div className="sidebar-widget widget-category-2 mb-30">
+                                <h5 className="section-title style-1 mb-30">
+                                        Couleur
+                                    </h5>
+                                    <div className="scroll"><CategoryProduct produits_couleurs={couleurs}/></div>
+                                </div>
+                                <div className="sidebar-widget widget-category-2 mb-30">
+                                <h5 className="section-title style-1 mb-30">
+                                        Materiaux
+                                    </h5>
+                                    <div className="scroll"><CategoryProduct produits_materiaux={materiaux}/></div>
                                 </div>
                         </div> 
                         <div className="col-lg-4-5">
@@ -77,6 +105,25 @@ const Slug = ({
                             ))}
                             </div>
                        </div>  
+                    </div>
+                    <div className="archive-header-2 text-center">
+                            <h2 className=" mt-50 mb-30">Produits associés</h2>
+                    </div>
+                    <div className="row product-grid-3">
+                        {autres_typeProds&&autres_typeProds.length === 0 && (
+                            <h3>Aucun type produit </h3>
+                        )}
+                        {autres_typeProds&&autres_typeProds.slice(0,10).map((typeproduit, i) => (
+                            <div
+                            className="col-lg-1-5 col-md-4 col-12 col-sm-6"
+                            key={i}
+                            >
+                                <SingleProduct 
+                                typeproduit={typeproduit}
+                                />
+                            </div>
+
+                        ))}
                     </div>
                 </div>         
             </section>
@@ -234,20 +281,6 @@ export async function getStaticProps(context) {
     const resTypeprods = await axios.get(`http://localhost:1337/api/typeprods?${queryTypeprods}`) 
     // Typeprods End
 
-    // Marques of univers Begin
-    const queryMarques = qs.stringify(
-        {
-            filters : {           
-                CLE_RAYON_PRINCIPAL: { $eq : resUnivers.data.data[0]["attributes"]["CLE_RAYON"] } ,           
-            }
-        },
-        {
-            encodeValuesOnly: true,
-        }
-    )
-    const resMarques = await axios.get(`http://localhost:1337/api/exposants?${queryMarques}`)      
-    // Marques of univers End
-
     // Produits Begin
     const queryProds = qs.stringify(
         {
@@ -264,8 +297,8 @@ export async function getStaticProps(context) {
     const resProds = await axios.get(`http://localhost:1337/api/produits?${queryProds}`) 
     // Produits End
 
-    const prods_exposants = []
     // Exposants produits Begin
+    const prods_exposants = []
     for (let produit of resProds.data.data){
         const queryExpProd = qs.stringify(
             {
@@ -281,6 +314,103 @@ export async function getStaticProps(context) {
         prods_exposants.push({produit:produit, exposant:resExpProd.data.data[0]})
     }
     // Exposants produits End
+
+    // Prix Produits Begin
+    let tabPrix = ([...resProds.data.data].map(produit => produit["attributes"]['TARIF_PUB']) )
+    let resPrix = []
+    tabPrix.forEach(element => {
+        if(element!="NULL"){
+            let f = resPrix.find(e=>e.prix==element)
+            if(f){
+                f.count=f.count+1
+            }else {
+                resPrix.push({prix:element, count:1})
+            }   
+        }
+    })
+    // Prix Produits End 
+
+    // Marques of univers Begin
+    const marques = prods_exposants.map(e=>e.exposant)  
+    // Marques of univers End
+
+    // Designers Begin
+    const designers = []
+    resProds.data.data.forEach(e=>{
+        if(!designers.find(element=>element["attributes"]["DESIGNER"]==e["attributes"]["DESIGNER"])){
+            designers.push(e)
+        }
+    })
+    // Designers End
+
+    // Styles Begin
+    const keys_styles = resProds.data.data.map(e=>e["attributes"]["CLE_STYLE"])
+
+    const queryStyles= qs.stringify(
+        {
+            filters : {           
+                CLE_STYLE: { $in : [...new Set(keys_styles)] } ,           
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    )
+    const resStyles = await axios.get(`http://localhost:1337/api/styles?${queryStyles}`)    
+    const styles = []
+    resStyles.data.data.forEach(e=>{
+        if(!styles.find(element=>element["attributes"]["CLE_STYLE"]==e["attributes"]["CLE_STYLE"])){
+            styles.push(e)
+        }
+    })
+    // Styles End
+
+    // Couleurs Begin
+    const keys_couleurs = resProds.data.data.map(e=>e["attributes"]["CLE_COULEUR"])
+
+    const queryCouleurs= qs.stringify(
+        {
+            filters : {           
+                CLE_COULEUR: { $in : [...new Set(keys_couleurs)] } ,           
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    )
+    const resCouleurs = await axios.get(`http://localhost:1337/api/couleurs?${queryCouleurs}`)    
+    const couleurs = []
+    resCouleurs.data.data.forEach(e=>{
+        if(!couleurs.find(element=>element["attributes"]["CLE_COULEUR"]==e["attributes"]["CLE_COULEUR"])){
+            couleurs.push(e)
+        }
+    })
+    // Couleurs End
+
+    // Materiaux Begin
+    const keys_materiaux1 = resProds.data.data.map(e=>e["attributes"]["CLE_MATERIAU1"])
+    const keys_materiaux2 = resProds.data.data.map(e=>e["attributes"]["CLE_MATERIAU2"])
+    const keys_materiaux3 = resProds.data.data.map(e=>e["attributes"]["CLE_MATERIAU3"])
+    const keys_materiaux = keys_materiaux1.concat(keys_materiaux2).concat(keys_materiaux3)
+    const queryMateriaux= qs.stringify(
+        {
+            filters : {           
+                CLE_MATERIAU: { $in : [...new Set(keys_materiaux)] } ,           
+            }
+        },
+        {
+            encodeValuesOnly: true,
+        }
+    )
+    const resMateriaux = await axios.get(`http://localhost:1337/api/materiaus?${queryMateriaux}`)    
+    const materiaux = []
+    resMateriaux.data.data.forEach(e=>{
+        if(!materiaux.find(element=>element["attributes"]["CLE_MATERIAU"]==e["attributes"]["CLE_MATERIAU"])){
+            materiaux.push(e)
+        }
+    })
+    // Materiaux End
+
     return {
         props: {
             superunivers_univers_categories : superunivers_univers,
@@ -288,12 +418,17 @@ export async function getStaticProps(context) {
             categorie : resCategory.data.data[0],
             univers : resUnivers.data.data[0],
             superunivers : resSuperunivers.data.data[0],
-            autres_typeProds : resTypeprods.data.data,
-            autres_exposants : resMarques.data.data,
+            autres_typeProds : resTypeprods.data.data.filter(e=>e["attributes"]['LIB_FR']!=resTypeprod.data.data["attributes"]['LIB_FR']),
+            autres_exposants : marques,
             produits : resProds.data.data,
-            prods_exposants : prods_exposants
+            prods_exposants : prods_exposants,
+            produits_prix : resPrix,
+            designers : designers,
+            styles : styles,
+            couleurs : couleurs,
+            materiaux : materiaux
         }, 
-      }
+    }
 }
 
 export default Slug
