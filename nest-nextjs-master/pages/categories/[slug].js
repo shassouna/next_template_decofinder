@@ -1,14 +1,6 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+
 import { connect } from "react-redux";
 import CategoryProduct from "../../components/ecommerce/Filter/CategoryProduct";
-import PriceRangeSlider from "../../components/ecommerce/Filter/PriceRangeSlider";
-import ShowSelect from "../../components/ecommerce/Filter/ShowSelect";
-import SizeFilter from "../../components/ecommerce/Filter/SizeFilter";
-import SortSelect from "../../components/ecommerce/Filter/SortSelect";
-import VendorFilter from "../../components/ecommerce/Filter/VendorFilter";
-import Pagination from "../../components/ecommerce/Pagination";
 import QuickView from "../../components/ecommerce/QuickView";
 import SingleProduct from "../../components/ecommerce/SingleProduct";
 import Breadcrumb2 from "../../components/layout/Breadcrumb2";
@@ -19,10 +11,7 @@ import { fetchProduct } from "../../redux/action/product";
 import axios from 'axios'
 
 const Products = ({ products, 
-    productFilters, 
-    fetchProduct, 
     superunivers_univers_categories, 
-    exposant, 
     categorie, 
     univers, 
     superunivers, 
@@ -36,7 +25,6 @@ const Products = ({ products,
     prods_exposants,
     prix
 }) => {
-    console.log(produits)
 
     return (
             <Layout noBreadcrumb="d-none" superunivers_univers_categories={superunivers_univers_categories}>
@@ -131,7 +119,7 @@ const Products = ({ products,
                                     <h6>Découvrez tous les produits de la catégorie {categorie&&categorie["attributes"]["LIB_FR"]} :</h6>
                                     <br/><br/>
                                     {prods_exposants&&prods_exposants.length === 0 && (
-                                        <h3>No Products Found </h3>
+                                        <h3>Aucun produit</h3>
                                     )}
                                     {prods_exposants&&prods_exposants.map((element, i) => (
                                         <div

@@ -56,7 +56,7 @@ const Header = ({
                                 <div className="header-action-right">
                                     <div className="header-action-2">
                                         <div className="header-action-icon-2">
-                                            <Link href="/shop-compare">
+                                            <Link href="/inspirations">
                                                 <a>
                                                     <span className="lable ml-0">
                                                     Inspirations
@@ -65,7 +65,7 @@ const Header = ({
                                             </Link>
                                         </div>
                                         <div className="header-action-icon-2">
-                                            <Link href="/shop-wishlist">
+                                            <Link href="/mag">
                                                 <a>
                                                 <span className="lable">
                                                 Le MAG
@@ -74,7 +74,7 @@ const Header = ({
                                             </Link>
                                         </div>
                                         <div className="header-action-icon-2">
-                                            <Link href="/shop-cart">
+                                            <Link href="/nouveautes">
                                                 <a>
                                                     <span className="lable">
                                                     Nouveautés
@@ -125,7 +125,7 @@ const Header = ({
                                          superunivers_univers_categories.map(superunivers_univers_categorie=>
                                            (
                                            <li className="position-static" key = {superunivers_univers_categorie["superunivers"]["id"]} >
-                                                <Link href="/#">
+                                                <Link href={`/superunivers/${superunivers_univers_categorie["superunivers"]["attributes"]["slug"]}`}>
                                                     <a>
                                                         {superunivers_univers_categorie["superunivers"]["attributes"]["LIB"]}
                                                         <i className="fi-rs-angle-down"></i>
@@ -135,19 +135,22 @@ const Header = ({
                                                 {
                                                 superunivers_univers_categorie["categories_univers"].map(categorie_univers=>(
                                                     <li className="sub-mega-menu sub-mega-menu-width-22">
-                                                        <a  key = {categorie_univers["univers"]["id"]}
-                                                            className="menu-title"
-                                                            href="#"
-                                                        >
-                                                            {categorie_univers["univers"]["attributes"]["LIB"]}
-                                                        </a>
+                                                        <Link href={`/univers/${categorie_univers["univers"]["attributes"]["slug"]}`}>
+                                                            <a key = {categorie_univers["univers"]["id"]}
+                                                                className="menu-title"
+                                                            >
+                                                                {categorie_univers["univers"]["attributes"]["LIB"]}
+                                                            </a>
+                                                        </Link>
                                                         <ul>
                                                         {
                                                         categorie_univers["categories"].map(categorie=>(
                                                             <li key ={categorie["id"]}>
-                                                                <a href="#">
-                                                                {categorie["attributes"]["LIB_FR"]}
-                                                                </a>
+                                                                <Link href={`/univers/${categorie["attributes"]["slug"]}`}>
+                                                                    <a>
+                                                                    {categorie["attributes"]["LIB_FR"]}
+                                                                    </a>
+                                                                </Link>
                                                             </li>
                                                         ))
                                                         }

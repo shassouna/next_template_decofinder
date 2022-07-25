@@ -15,7 +15,8 @@ const CategoryProduct = ({
     produits_styles, 
     produits_couleurs, 
     produits_materiaux,
-    autres_univers }) => {
+    autres_univers,
+    produits_motifs }) => {
     const router = useRouter();
 
     const selectCategory = (e, category) => {
@@ -36,7 +37,7 @@ const CategoryProduct = ({
             {
             autres_categories&&autres_categories.map(val=>(
                 <li>
-                    <Link href={`http://localhost:3000/categories/${val['attributes']['slug']}`}>
+                    <Link href={`/categories/${val['attributes']['slug']}`}>
                     <a>
                         {val["attributes"]["LIB_FR"]}
                     </a>    
@@ -48,7 +49,7 @@ const CategoryProduct = ({
             {
             typeprods&&typeprods.map(val=>(
                 <li>
-                    <Link href={`http://localhost:3000/type-produits/${val['attributes']['slug']}`}>
+                    <Link href={`/types-produits/${val['attributes']['slug']}`}>
                     <a>
                         {val['attributes']['LIB_FR']}
                     </a>    
@@ -60,7 +61,7 @@ const CategoryProduct = ({
             {
             autres_exposants&&autres_exposants.map(val=>(
                 <li>
-                    <Link href={`http://localhost:3000/exposants/${val['attributes']['slug']}`}>
+                    <Link href={`/exposants/${val['attributes']['slug']}`}>
                     <a>
                         {val['attributes']['NOM']}
                     </a>    
@@ -121,11 +122,21 @@ const CategoryProduct = ({
             {
             autres_univers&&autres_univers.map(val=>(
                 <li>
-                    <Link href={`http://localhost:3000/univers/${val['attributes']['slug']}`}>
+                    <Link href={`/univers/${val['attributes']['slug']}`}>
                     <a>
                         {val["attributes"]["LIB"]}
                     </a>    
                     </Link>
+                    <span className="count">{/*30*/}</span>
+                </li>                
+            ))
+            } 
+            {
+            produits_motifs&&produits_motifs.map(val=>(
+                <li>
+                    <a>
+                        {val["attributes"]["LIB_FR"]}
+                    </a>    
                     <span className="count">{/*30*/}</span>
                 </li>                
             ))

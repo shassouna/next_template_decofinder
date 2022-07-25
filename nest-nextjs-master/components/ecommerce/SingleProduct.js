@@ -28,10 +28,10 @@ const SingleProduct = ({
     typeproduit,
     inspiration,
     nouveaute,
+    univers,
     addToCart,
     addToCompare,
     addToWishlist,
-    openQuickView,
 }) => {
 
     const handleCart = (product) => {
@@ -87,22 +87,21 @@ const SingleProduct = ({
                     </div>
                     <div className="product-content-wrap">
                         <div className="product-category">
-                            <Link href="/products">
+                            <Link href={`/exposants/${exposant['attributes']["slug"]}`}>
                                 <a>{exposant['attributes']['NOM']}</a>
                             </Link>
                         </div>
                         <h2>
                             <Link
-                                href={`/products/${produit["attributes"]["slug"]}`}
-                                as={`/products/${produit["attributes"]["slug"]}`}
+                                href={`/produits/${produit["attributes"]["slug"]}`}
+                                as={`/produits/${produit["attributes"]["slug"]}`}
                             >
                                 <a>{produit['attributes']['TITRE_FR']}</a>
                             </Link>
                         </h2>
                         {showProductDescription &&
                             <div style={{visibilty:"hidden"}}>
-                                <span className="font-small text-muted">
-                                    {cleanHTML(produit['attributes']['DESC_FR']).length>1&&cleanHTML(produit['attributes']['DESC_FR']).split(" ").slice(0,12).join(" ")+" ...."}
+                                <span className="font-small text-muted" dangerouslySetInnerHTML={{__html: produit['attributes']['DESC_FR'].split(" ").slice(0,12).join(" ")+" ...."}}>
                                 </span>
                             </div>
                         }
@@ -124,8 +123,8 @@ const SingleProduct = ({
                     <div className="product-img-action-wrap">
                         <div className="product-img product-img-zoom">
                             <Link
-                                href="/products/[slug]"
-                                as={`/products/${"product.slug"}`}
+                                href={`/types-produits/${typeproduit["attributes"]["slug"]}`}
+                                as={`/types-produits/${typeproduit["attributes"]["slug"]}`}
                             >
                                 <a>
                                     <img
@@ -145,8 +144,8 @@ const SingleProduct = ({
                     <div className="product-content-wrap">
                         <h2>
                             <Link
-                                href="/products/[slug]"
-                                as={`/products/${"product.slug"}`}
+                                href={`/types-produits/${typeproduit["attributes"]["slug"]}`}
+                                as={`/types-produits/${typeproduit["attributes"]["slug"]}`}
                             >
                                 <a>{typeproduit['attributes']['LIB_FR']}</a>
                             </Link>
@@ -168,8 +167,8 @@ const SingleProduct = ({
                     <div className="product-img-action-wrap">
                         <div className="product-img product-img-zoom">
                             <Link
-                                href="/products/[slug]"
-                                as={`/products/${"product.slug"}`}
+                                href="#"
+                                as={"#"}
                             >
                                 <a>
                                     <img
@@ -210,19 +209,19 @@ const SingleProduct = ({
                     </div>
                     <div className="product-content-wrap">
                     <h2 >
-                            <Link href="/products">
+                            <Link href={`${selection.exposant["attributes"]["slug"]}`}>
                                 <a style={{color:"#000000"}}>{selection.exposant['attributes']['NOM'].toUpperCase()}</a>
                             </Link>
                     </h2>
                     <div className="product-card-bottom">
-                            <Link href="/products">
+                            <Link href={`/types-produits/${selection.typeprod["attributes"]["slug"]}`}>
                                 <a>{selection.typeprod['attributes']['LIB_FR']}</a>
                             </Link>
                     </div>
                     <div className="product-category">
                         <Link
-                            href="/products/[slug]"
-                            as={`/products/${"product.slug"}`}
+                            href={`/produits/${selection.typeprod["attributes"]["slug"]}`}
+                            as={`/produits/${selection.typeprod["attributes"]["slug"]}`}
                         >
                             <a>{selection.produit["attributes"]["TITRE_FR"]!="NULL"?selection.produit["attributes"]["TITRE_FR"]:selection.produit["attributes"]["MODELES"]}</a>
                         </Link>
@@ -237,8 +236,8 @@ const SingleProduct = ({
                     <div className="product-img-action-wrap">
                         <div className="product-img product-img-zoom">
                             <Link
-                                href="/products/[slug]"
-                                as={`/products/${"product.slug"}`}
+                                href={"#"}
+                                as={"#"}
                             >
                                 <a>
                                     <img
@@ -258,14 +257,14 @@ const SingleProduct = ({
                     <div className="product-content-wrap">
                     <div className="product-category" style={{display:"flex", justifyContent:"center", marginTop:"10px"}}>
                         <Link
-                            href="/products/[slug]"
-                            as={`/products/${"product.slug"}`}
+                            href={`/inspirations`}
+                            as={`/inspirations`}
                         >
                             <a>Inspiration</a>
                         </Link>
                     </div>
                     <h2 style={{display:"flex", justifyContent:"center"}}>
-                            <Link href="/products">
+                            <Link href={`/exposants/${inspiration.exposant['attributes']}`}>
                                 <a style={{color:"#000000"}}>{inspiration.exposant['attributes']['NOM'].toUpperCase()}</a>
                             </Link>
                     </h2>
@@ -280,8 +279,8 @@ const SingleProduct = ({
                     <div className="product-img-action-wrap">
                         <div className="product-img product-img-zoom">
                             <Link
-                                href="/products/[slug]"
-                                as={`/products/${"product.slug"}`}
+                                href={"#"}
+                                as={"#"}
                             >
                                 <a>
                                     <img
@@ -304,12 +303,55 @@ const SingleProduct = ({
                             href="/products/[slug]"
                             as={`/products/${"product.slug"}`}
                         >
-                            <a>Inspiration</a>
+                            <a>Nouveautés</a>
+                        </Link>
+                    </div>
+                    <h2 style={{display:"flex", justifyContent:"center"}}>
+                            <Link href={`exposants/${nouveaute.exposant["attributes"]["slug"]}`}>
+                                <a style={{color:"#000000"}}>{nouveaute.exposant['attributes']['NOM'].toUpperCase()}</a>
+                            </Link>
+                    </h2>
+                    </div>
+                </div>    
+}
+
+{   // case univers
+            univers && 
+                <div className="product-cart-wrap mb-30" onMouseOver={handleShowDescription} onMouseLeave={handleHideDescription}
+                >
+                    <div className="product-img-action-wrap">
+                        <div className="product-img product-img-zoom">
+                            <Link
+                                href={`#`}
+                                as={`#`}
+                            >
+                                <a>
+                                    <img
+                                        className="default-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                    <img
+                                        className="hover-img"
+                                        src={"/assets/imgs/shop/product-1-1.jpg"}
+                                        alt=""
+                                    />
+                                </a>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="product-content-wrap">
+                    <div className="product-category" style={{display:"flex", justifyContent:"center", marginTop:"10px"}}>
+                        <Link
+                            href={`univers/${univers["attributes"]["slug"]}`}
+                            as={`univers/${univers["attributes"]["slug"]}`}
+                        >
+                            <a>Univers</a>
                         </Link>
                     </div>
                     <h2 style={{display:"flex", justifyContent:"center"}}>
                             <Link href="/products">
-                                <a style={{color:"#000000"}}>{nouveaute.exposant['attributes']['NOM'].toUpperCase()}</a>
+                                <a style={{color:"#000000"}}>{univers['attributes']['LIB'].toUpperCase()}</a>
                             </Link>
                     </h2>
                     </div>
