@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useRouter } from 'next/router'
 
 const Breadcrumb2 = ({levels, title, description}) => {
@@ -18,7 +18,7 @@ const Breadcrumb2 = ({levels, title, description}) => {
                                 {levels&&
                                 <div className="breadcrumb">
                                     {levels.map((val,index)=>{
-                                        return index == levels.length-1 || index == 0 ? <div key={val}>{val}  </div> : <div key={[val]}>{val} <span></span> {titlex}</div>
+                                        return index == levels.length-1 || index == 0 ? <div key={val}>{val} </div> : <div key={[val]}>{val} <span></span> {titlex}</div>
                                     }
                                     )}
                                 </div>}
@@ -32,4 +32,4 @@ const Breadcrumb2 = ({levels, title, description}) => {
     );
 };
 
-export default Breadcrumb2;
+export default Breadcrumb2

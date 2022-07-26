@@ -79,12 +79,29 @@ const Slug = ({
 export default Slug
 
 export async function getStaticPaths() {
+   const qs =require('qs')
+   const querySuperUnivers = qs.stringify(
+       {
+           filters: {
+                       CLE_LANG : { $eq: "0" }
+                   }
+       },
+       {
+           encodeValuesOnly: true,
+       }
+   ) 
 
-    const paths = []
+    const res = await axios.get(`http://localhost:1337/api/superuniversdetailss?${querySuperUnivers}`)
 
+    const paths = res.data.data.map(element=>{
+        return {
+            params:{slug : element["attributes"]["slug"]}
+        }
+
+    })
     return {
         paths:paths,
-        fallback : true
+        fallback : false
     }
 }
 
